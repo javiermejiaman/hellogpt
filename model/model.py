@@ -44,10 +44,12 @@ class TransformerBlock(nn.Module):
           and prevent overfitting.
       
       Args:
-        batch (torch.Tensor): Batch of token sequences with shape (B, S).
+        batch (Tensor): shape (B, S, D_MODEL) - Batch of sequences 
+        of token embeddings.
       
       Returns:
-        torch.Tensor: Logits for each token in the batch with shape (B, S, D_MODEL).
+        Tensor: shape (B, S, D_MODEL) - Updated representations after 
+        self-attention and feed-forward pass.
     """
     batch_seq_len=batch.size()[1]
 
@@ -107,7 +109,7 @@ class Model(nn.Module):
         batch (Tensor): shape (B, S) - Batch of token sequences.
       
       Returns:
-        Tensor: shape(B, S, VOCAB_SIZE) - Logits for each token in the batch.
+        Tensor: shape (B, S, VOCAB_SIZE) - Logits for each token in the batch.
     """
     positions = torch.arange(batch.size()[1], device=C.DEVICE).unsqueeze(0)
 
