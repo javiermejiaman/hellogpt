@@ -1,5 +1,5 @@
 import os
-import config as C
+import src.config as C
 from tokenizers import ByteLevelBPETokenizer
 
 file_paths = [os.path.join(C.DATA_PATH, f)

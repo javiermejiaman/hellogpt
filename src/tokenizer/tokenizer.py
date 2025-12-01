@@ -1,4 +1,4 @@
-import config as C
+import src.config as C
 from transformers import GPT2TokenizerFast
 
 tokenizer = GPT2TokenizerFast.from_pretrained(C.TOKENIZER_MODEL_PATH,

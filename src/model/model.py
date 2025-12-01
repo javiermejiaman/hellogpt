@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import config as C
+import src.config as C
 import transformer
 
 class Model(nn.Module):
