@@ -5,7 +5,7 @@ import transformer
 
 class Model(nn.Module):
   """HelloGPT model.
-  
+
   General architecture:
     1 -> Embeddings lookup and addition
     2 -> Dropout
@@ -17,10 +17,10 @@ class Model(nn.Module):
     1) Encodes tokens and their position in the sequence.
     2) Randomly disables activations to prevent model overfitting.
     3) Applies self attention and feed-forward networks to enrich 
-        embeddings with contextual information.
+       embeddings with contextual information.
     4) Stabilizes training and prevent gradient spikes.
     5) Linear projection mapping each token embedding to the 
-        vocabulaby logits.
+       vocabulaby logits.
   """
   
   def __init__(self):
