@@ -6,7 +6,7 @@ VOCAB_SIZE: int = 8000
 MIN_FREQ: int = 2
 
 # Model
-SEQ_LEN: int = 128
+MAX_SEQ_LEN: int = 128
 D_MODEL: int = 256
 D_FF: int = D_MODEL * 4
 NUM_LAYERS: int = 4

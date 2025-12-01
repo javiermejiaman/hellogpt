@@ -26,7 +26,7 @@ class Model(nn.Module):
   def __init__(self):
     super().__init__()
     self.token_embedding = nn.Embedding(C.VOCAB_SIZE, C.D_MODEL)
-    self.pos_embedding = nn.Embedding(C.SEQ_LEN, C.D_MODEL)
+    self.pos_embedding = nn.Embedding(C.MAX_SEQ_LEN, C.D_MODEL)
 
     self.layers = nn.ModuleList([transformer.TransformerBlock() for _ in range(C.NUM_LAYERS)])
 
@@ -44,14 +44,20 @@ class Model(nn.Module):
     Returns:
       Tensor: shape (B, S, V) - Logits for each token in the batch.
     """
-    positions = torch.arange(batch.size()[1], device=C.DEVICE).unsqueeze(0)
+    positions = torch.arange(batch.size()[1], 
+                             device=C.DEVICE
+    ).unsqueeze(0)                               # (1, S)
 
-    batch = self.token_embedding(batch) + self.pos_embedding(positions)
-    batch = self.dropout(batch)
+    batch = (
+      self.token_embedding(batch) 
+      + self.pos_embedding(positions)
+    )                                            # (B, S, D)
+    
+    batch = self.dropout(batch)                  # (B, S, D)
 
     for layer in self.layers:
-      batch = layer(batch)
+      batch = layer(batch)                       # (B, S, D)
 
-    batch = self.ln_head(batch)
+    batch = self.ln_head(batch)                  # (B, S, D)
     
-    return self.head(batch)
+    return self.head(batch)                      # (B, S, V)

@@ -12,12 +12,12 @@ class TransformerBlock(nn.Module):
       LN -> Layer normalization
       AT -> Multi-head attention
       RD -> Residual connections + dropout
-      
+    
     FEED-FORWARD BLOCK
       LN -> Layer normalization
       FF -> Feed-forward sub-layers
       RD -> Residual connections + dropout
-
+  
   Description:
     CM) Prevents tokens from attending to future positions.
     LN) Stabilizes training and prevent gradient spikes.
@@ -58,18 +58,18 @@ class TransformerBlock(nn.Module):
     self.causal_mask = torch.triu(
       torch.ones(batch_seq_len, batch_seq_len, device=C.DEVICE, dtype=torch.bool),
       diagonal=1
-    )
+    ) # (S, S)
     
-    batch = self.ln_attn(batch)
+    batch = self.ln_attn(batch)                  # (B, S, D)
     attn = self.attn(
       batch, batch, batch,
       attn_mask=self.causal_mask,
       need_weights=False
-    )[0]
-    batch = batch + self.dropout(attn)
+    )[0]                                         # (B, S, D)
+    batch = batch + self.dropout(attn)           # (B, S, D)
     
-    batch = self.ln_ff(batch)
-    ff = self.ff(batch)
-    batch = batch + self.dropout(ff)
+    batch = self.ln_ff(batch)                    # (B, S, D)
+    ff = self.ff(batch)                          # (B, S, D)
+    batch = batch + self.dropout(ff)             # (B, S, D)
 
-    return batch
+    return batch                                 # (B, S, D)
