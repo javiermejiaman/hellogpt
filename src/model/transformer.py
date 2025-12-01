@@ -37,13 +37,32 @@ class TransformerBlock(nn.Module):
                                       C.DROPOUT, 
                                       batch_first=True)
     self.ln_attn = nn.LayerNorm(C.D_MODEL)
-    self.ln_ff = nn.LayerNorm(C.D_MODEL)
+    self.ln_ffn = nn.LayerNorm(C.D_MODEL)
     self.dropout = nn.Dropout(C.DROPOUT)
-    self.ff = nn.Sequential(
+    self.ffn = nn.Sequential(
       nn.Linear(C.D_MODEL, C.D_FF),
       nn.GELU(),
       nn.Linear(C.D_FF, C.D_MODEL)
     )
+  
+  def get_causal_mask(seq_len: int):
+    """Creates a boolean causal mask.
+
+    Used to prevents tokens from attending to future positions.
+    
+    Args:
+      seq_len (int): Length of the current sequence.
+    
+    Returns:
+      Tensor: shape (S, S) - Upper triangular boolean mask.
+    """
+    ones_matrix = torch.ones(seq_len, 
+                                seq_len, 
+                                device=C.DEVICE, 
+                                dtype=torch.bool
+    )                                                      # (S, S)
+
+    return torch.triu(ones_matrix, diagonal=1)             # (S, S)
   
   def forward(self, batch):
     """Forward passes the input batch through the transformer.
@@ -56,26 +75,18 @@ class TransformerBlock(nn.Module):
       Tensor: shape (B, S, D) - Updated representations after 
       self-attention and feed-forward pass.
     """
-    batch_seq_len=batch.size()[1]
-
-    self.causal_mask = torch.triu(
-      torch.ones(batch_seq_len, 
-                 batch_seq_len, 
-                 device=C.DEVICE, 
-                 dtype=torch.bool),
-      diagonal=1
-    )                                                      # (S, S)
+    causal_mask = self.get_causal_mask(batch.size()[1])
     
     batch = self.ln_attn(batch)                            # (B, S, D)
     attn = self.attn(
       batch, batch, batch,
-      attn_mask=self.causal_mask,
+      attn_mask=causal_mask,
       need_weights=False
     )[0]                                                   # (B, S, D)
     batch = batch + self.dropout(attn)                     # (B, S, D)
     
-    batch = self.ln_ff(batch)                              # (B, S, D)
-    ff = self.ff(batch)                                    # (B, S, D)
-    batch = batch + self.dropout(ff)                       # (B, S, D)
+    batch = self.ln_ffn(batch)                             # (B, S, D)
+    ffn = self.ffn(batch)                                  # (B, S, D)
+    batch = batch + self.dropout(ffn)                      # (B, S, D)
 
     return batch                                           # (B, S, D)
