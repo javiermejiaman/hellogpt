@@ -4,6 +4,24 @@ import config as C
 import transformer
 
 class Model(nn.Module):
+  """HelloGPT model.
+  
+  General architecture:
+    1 -> Embeddings lookup and addition
+    2 -> Dropout
+    3 -> -> -> Transformers
+    4 -> Layer normalization
+    5 -> Head layer
+
+  Description:
+    1) Encodes tokens and their position in the sequence.
+    2) Randomly disables activations to prevent model overfitting.
+    3) Applies self attention and feed-forward networks to enrich 
+        embeddings with contextual information.
+    4) Stabilizes training and prevent gradient spikes.
+    5) Linear projection mapping each token embedding to the 
+        vocabulaby logits.
+  """
   
   def __init__(self):
     super().__init__()
@@ -20,27 +38,11 @@ class Model(nn.Module):
   def forward(self, batch):
     """Forward passes the input batch through the model.
     
-    General architecture:
-      1 -> Embeddings lookup and addition
-      2 -> Dropout
-      3 -> -> -> Transformers
-      4 -> Layer normalization
-      5 -> Head layer
-
-    Description:
-      1) Encodes tokens and their position in the sequence.
-      2) Randomly disables activations to prevent model overfitting.
-      3) Applies self attention and feed-forward networks to enrich 
-         embeddings with contextual information.
-      4) Stabilizes training and prevent gradient spikes.
-      5) Linear projection mapping each token embedding to the 
-         vocabulaby logits.
-      
-      Args:
-        batch (Tensor): shape (B, S) - Batch of token sequences.
-      
-      Returns:
-        Tensor: shape (B, S, VOCAB_SIZE) - Logits for each token in the batch.
+    Args:
+      batch (Tensor): shape (B, S) - Batch of token sequences.
+    
+    Returns:
+      Tensor: shape (B, S, VOCAB_SIZE) - Logits for each token in the batch.
     """
     positions = torch.arange(batch.size()[1], device=C.DEVICE).unsqueeze(0)
 

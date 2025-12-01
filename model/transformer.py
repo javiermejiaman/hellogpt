@@ -3,6 +3,32 @@ import torch.nn as nn
 import config as C
 
 class TransformerBlock(nn.Module):
+  """Transformer block.
+
+  General architecture:
+
+    ATTENTION BLOCK
+      CM -> Causal mask
+      LN -> Layer normalization
+      AT -> Multi-head attention
+      RD -> Residual connections + dropout
+      
+    FEED-FORWARD BLOCK
+      LN -> Layer normalization
+      FF -> Feed-forward sub-layers
+      RD -> Residual connections + dropout
+
+  Description:
+    CM) Prevents tokens from attending to future positions.
+    LN) Stabilizes training and prevent gradient spikes.
+    AT) Enriches embeddings with contextual information.
+    FF) Neural network applied independently to each token 
+        embedding to produce a refined representation.
+    RD) Prevents gradient vanishing by letting it flow 
+        through the skip path. 
+        Drop out is also applied to disable activations 
+        and prevent overfitting.
+  """
   
   def __init__(self):
     super().__init__()
@@ -18,38 +44,14 @@ class TransformerBlock(nn.Module):
   
   def forward(self, batch):
     """Forward passes the input batch through the transformer.
+
+    Args:
+      batch (Tensor): shape (B, S, D_MODEL) - Batch of sequences 
+      of token embeddings.
     
-    General architecture:
-
-      ATTENTION BLOCK
-        CM -> Causal mask
-        LN -> Layer normalization
-        AT -> Multi-head attention
-        RD -> Residual connections + dropout
-        
-      FEED-FORWARD BLOCK
-        LN -> Layer normalization
-        FF -> Feed-forward sub-layers
-        RD -> Residual connections + dropout
-
-    Description:
-      CM) Prevents tokens from attending to future positions.
-      LN) Stabilizes training and prevent gradient spikes.
-      AT) Enriches embeddings with contextual information.
-      FF) Neural network applied independently to each token 
-          embedding to produce a refined representation.
-      RD) Prevents gradient vanishing by letting it flow 
-          through the skip path. 
-          Drop out is also applied to disable activations 
-          and prevent overfitting.
-      
-      Args:
-        batch (Tensor): shape (B, S, D_MODEL) - Batch of sequences 
-        of token embeddings.
-      
-      Returns:
-        Tensor: shape (B, S, D_MODEL) - Updated representations after 
-        self-attention and feed-forward pass.
+    Returns:
+      Tensor: shape (B, S, D_MODEL) - Updated representations after 
+      self-attention and feed-forward pass.
     """
     batch_seq_len=batch.size()[1]
 
