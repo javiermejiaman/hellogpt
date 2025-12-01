@@ -28,7 +28,8 @@ class Model(nn.Module):
     self.token_embedding = nn.Embedding(C.VOCAB_SIZE, C.D_MODEL)
     self.pos_embedding = nn.Embedding(C.MAX_SEQ_LEN, C.D_MODEL)
 
-    self.layers = nn.ModuleList([transformer.TransformerBlock() for _ in range(C.NUM_LAYERS)])
+    self.layers = nn.ModuleList([transformer.TransformerBlock() 
+                                 for _ in range(C.NUM_LAYERS)])
 
     self.ln_head = nn.LayerNorm(C.D_MODEL)
     self.head = nn.Linear(C.D_MODEL, C.VOCAB_SIZE, bias=False)
@@ -46,18 +47,18 @@ class Model(nn.Module):
     """
     positions = torch.arange(batch.size()[1], 
                              device=C.DEVICE
-    ).unsqueeze(0)                               # (1, S)
+    ).unsqueeze(0)                                         # (1, S)
 
     batch = (
       self.token_embedding(batch) 
       + self.pos_embedding(positions)
-    )                                            # (B, S, D)
-    
-    batch = self.dropout(batch)                  # (B, S, D)
+    )                                                      # (B, S, D)
+
+    batch = self.dropout(batch)                            # (B, S, D)
 
     for layer in self.layers:
-      batch = layer(batch)                       # (B, S, D)
+      batch = layer(batch)                                 # (B, S, D)
 
-    batch = self.ln_head(batch)                  # (B, S, D)
+    batch = self.ln_head(batch)                            # (B, S, D)
     
-    return self.head(batch)                      # (B, S, V)
+    return self.head(batch)                                # (B, S, V)

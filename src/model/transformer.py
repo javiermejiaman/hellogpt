@@ -32,7 +32,10 @@ class TransformerBlock(nn.Module):
   
   def __init__(self):
     super().__init__()
-    self.attn = nn.MultiheadAttention(C.D_MODEL, C.NUM_HEADS, C.DROPOUT, batch_first=True)
+    self.attn = nn.MultiheadAttention(C.D_MODEL, 
+                                      C.NUM_HEADS, 
+                                      C.DROPOUT, 
+                                      batch_first=True)
     self.ln_attn = nn.LayerNorm(C.D_MODEL)
     self.ln_ff = nn.LayerNorm(C.D_MODEL)
     self.dropout = nn.Dropout(C.DROPOUT)
@@ -56,20 +59,23 @@ class TransformerBlock(nn.Module):
     batch_seq_len=batch.size()[1]
 
     self.causal_mask = torch.triu(
-      torch.ones(batch_seq_len, batch_seq_len, device=C.DEVICE, dtype=torch.bool),
+      torch.ones(batch_seq_len, 
+                 batch_seq_len, 
+                 device=C.DEVICE, 
+                 dtype=torch.bool),
       diagonal=1
-    ) # (S, S)
+    )                                                      # (S, S)
     
-    batch = self.ln_attn(batch)                  # (B, S, D)
+    batch = self.ln_attn(batch)                            # (B, S, D)
     attn = self.attn(
       batch, batch, batch,
       attn_mask=self.causal_mask,
       need_weights=False
-    )[0]                                         # (B, S, D)
-    batch = batch + self.dropout(attn)           # (B, S, D)
+    )[0]                                                   # (B, S, D)
+    batch = batch + self.dropout(attn)                     # (B, S, D)
     
-    batch = self.ln_ff(batch)                    # (B, S, D)
-    ff = self.ff(batch)                          # (B, S, D)
-    batch = batch + self.dropout(ff)             # (B, S, D)
+    batch = self.ln_ff(batch)                              # (B, S, D)
+    ff = self.ff(batch)                                    # (B, S, D)
+    batch = batch + self.dropout(ff)                       # (B, S, D)
 
-    return batch                                 # (B, S, D)
+    return batch                                           # (B, S, D)
