@@ -46,11 +46,11 @@ class TransformerBlock(nn.Module):
     """Forward passes the input batch through the transformer.
 
     Args:
-      batch (Tensor): shape (B, S, D_MODEL) - Batch of sequences 
+      batch (Tensor): shape (B, S, D) - Batch of sequences 
       of token embeddings.
     
     Returns:
-      Tensor: shape (B, S, D_MODEL) - Updated representations after 
+      Tensor: shape (B, S, D) - Updated representations after 
       self-attention and feed-forward pass.
     """
     batch_seq_len=batch.size()[1]

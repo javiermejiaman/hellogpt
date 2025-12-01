@@ -42,7 +42,7 @@ class Model(nn.Module):
       batch (Tensor): shape (B, S) - Batch of token sequences.
     
     Returns:
-      Tensor: shape (B, S, VOCAB_SIZE) - Logits for each token in the batch.
+      Tensor: shape (B, S, V) - Logits for each token in the batch.
     """
     positions = torch.arange(batch.size()[1], device=C.DEVICE).unsqueeze(0)
 
