@@ -1,5 +1,12 @@
+import logging
 import torch
 import os
+
+# Project
+PROJECT_NAME: str = 'HelloGPT'
+
+# Logging
+LOGGING_LEVEL: any = logging.INFO
 
 # Tokenization
 VOCAB_SIZE: int = 8000
