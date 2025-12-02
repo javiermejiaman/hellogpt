@@ -51,7 +51,8 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
     model.eval()
     with torch.no_grad():
       losses, batch_size = zip(
-        *[loss_batch(model, loss_func, xb, yb) for xb, yb in valid_dl]
+        *[loss_batch(model, loss_func, xb.to(C.DEVICE), yb.to(C.DEVICE)) 
+          for xb, yb in valid_dl]
       )
     valid_loss = np.sum(np.multiply(losses, batch_size)) / np.sum(batch_size)
 

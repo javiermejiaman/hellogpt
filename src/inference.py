@@ -1,14 +1,10 @@
 import torch
-from model.model import Model
 import src.config as C
 from tokenizer.tokenizer import encode, decode
-from utils.file_utils import get_model_latest_serial, get_model_path
+from utils.file_utils import load_model
 from utils.sequence_utils import slide_window
 
-model = Model().to(C.DEVICE)
-model.load_state_dict(torch.load(get_model_path(get_model_latest_serial()), 
-                                 map_location=C.DEVICE))
-model.eval()
+model = load_model()
 
 def generate(prompt):
   """Autoregressive text generation.
