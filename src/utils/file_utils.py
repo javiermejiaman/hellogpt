@@ -1,6 +1,8 @@
 import os
 import re
+import torch
 import config as C
+from model.model import Model
 
 def get_model_path(serial):
   """Gets the model path.
@@ -30,7 +32,10 @@ def get_model_latest_serial():
                    for f in list_files_paths(model_checkpoints_path)
   ]
 
-  return max(model_serials)
+  if (len(model_serials) == 0 or all(None == s for s in model_serials)):
+    return None
+
+  return max(s for s in model_serials if s is not None)
 
 def extract_model_serial(model_serial_name):
   """Extract serial from the model name.
@@ -60,3 +65,44 @@ def list_files_paths(dir):
           for f in os.listdir(dir) 
           if os.path.isfile(os.path.join(dir, f))
   ]
+
+def load_model():
+  """Loads model.
+  
+  Returns:
+    Model: Model instance.
+  """
+
+  model = Model().to(C.DEVICE)
+  
+  if serial := get_model_latest_serial():
+    model.load_state_dict(torch.load(get_model_path(serial), 
+                                     map_location=C.DEVICE))
+    model.eval()
+
+  return model
+
+def save_model(model, optimizer, epoch, train_loss):
+  """Saves model.
+
+  Saves the model state, optimizer state, epoch and training 
+  loss of the latest epoch.
+  
+  Args:
+    model (Model): Model instance.
+    optimizer (AdamW): Model optimizer instance.
+    epoch (int): Current training epoch.
+    train_loss (float): Training loss of the last epoch.
+  """
+
+  checkpoint = {
+    "model_state": model.state_dict(),
+    "optimizer_state": optimizer.state_dict(),
+    "epoch": epoch,
+    "loss": train_loss
+  }
+  
+  latest_serial = get_model_latest_serial()
+  next_serial = latest_serial + 1 if latest_serial else 1
+  
+  torch.save(checkpoint, get_model_path(next_serial))

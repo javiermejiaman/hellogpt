@@ -1,19 +1,17 @@
 import numpy as np
 import torch
 from torch.utils.data import DataLoader, random_split
-from model.model import Model
 import src.config as C
 from train.dataset import TextDataset
 import torch.nn.functional as F
 from torch.nn.utils import clip_grad_norm_
-from utils.file_utils import get_model_latest_serial, get_model_path
+from utils.file_utils import load_model, save_model
+from torch.optim import AdamW
 
 def get_model():
-  model = Model().to(C.DEVICE)
-  model.load_state_dict(torch.load(get_model_path(get_model_latest_serial()), 
-                                  map_location=C.DEVICE))
-  model.eval()
-  return model, torch.optim.AdamW(model.parameters(), lr=C.LEARNING_RATE)
+  model = load_model()
+  
+  return model, AdamW(model.parameters(), lr=C.LEARNING_RATE)
 
 def get_data(train_ds, valid_ds):
   return (
@@ -38,22 +36,28 @@ def loss_batch(model, loss_func, xb, yb, opt=None):
   return loss.item(), len(xb)
 
 def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
+
   for epoch in range(epochs):
+    total_loss = 0
+    total_samples = 0
+
     model.train()
     for xb, yb in train_dl:
       xb, yb = xb.to(C.DEVICE), yb.to(C.DEVICE)
-      loss_batch(model, loss_func, xb, yb, opt)
-
+      losses, batch_size = loss_batch(model, loss_func, xb, yb, opt)
+      total_loss += losses * batch_size
+      total_samples += batch_size
+    
     model.eval()
     with torch.no_grad():
-      losses, nums = zip(
+      losses, batch_size = zip(
         *[loss_batch(model, loss_func, xb, yb) for xb, yb in valid_dl]
       )
-    valid_loss = np.sum(np.multiply(losses, nums)) / np.sum(nums)
+    valid_loss = np.sum(np.multiply(losses, batch_size)) / np.sum(batch_size)
 
     print(epoch, valid_loss)
 
-    torch.save(model.state_dict(), get_model_path(get_model_latest_serial() + 1))
+    save_model(model, opt, epoch, total_loss / total_samples)
 
 loss_func = F.cross_entropy
 
