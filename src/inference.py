@@ -24,10 +24,10 @@ def generate(prompt):
                        dtype=torch.long
   ).to(C.DEVICE)                                           # (1, S)
 
-  for _ in range(C.MAX_NEW_TOKENS):
+  with torch.no_grad():
     batch = slide_window(batch)                            # (1, S)
-
-    with torch.no_grad():
+    
+    for _ in range(C.MAX_NEW_TOKENS):
       logits = model(batch)                                # (1, S, V)
       next_token_logits = logits[0, -1, :]                 # (V)
       probs = torch.softmax(next_token_logits 
@@ -37,3 +37,4 @@ def generate(prompt):
       yield decode(next_token.tolist())[0]
 
       batch = torch.cat([batch, next_token], dim=1)        # (1, S+1)
+      batch = slide_window(batch)                          # (1, S)
