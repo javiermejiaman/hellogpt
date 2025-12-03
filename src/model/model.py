@@ -1,7 +1,7 @@
 import torch
 import torch.nn as nn
 import src.config as C
-import transformer
+from src.model import transformer
 
 class Model(nn.Module):
   """HelloGPT model.

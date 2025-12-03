@@ -1,8 +1,8 @@
 import torch
 import src.config as C
-from tokenizer.tokenizer import encode, decode
-from utils.file_utils import load_model
-from utils.sequence_utils import slide_window
+from src.tokenizer.tokenizer import encode, decode
+from src.utils.file_utils import load_model
+from src.utils.sequence_utils import slide_window
 
 model = load_model()
 

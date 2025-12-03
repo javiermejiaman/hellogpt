@@ -1,8 +1,8 @@
 import os
 import re
 import torch
-import config as C
-from model.model import Model
+import src.config as C
+from src.model.model import Model
 
 def get_model_path(serial):
   """Gets the model path.

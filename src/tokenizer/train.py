@@ -1,7 +1,6 @@
-import os
 import src.config as C
 from tokenizers import ByteLevelBPETokenizer
-from utils.file_utils import list_files_paths
+from src.utils.file_utils import list_files_paths
 
 tokenizer = ByteLevelBPETokenizer()
 

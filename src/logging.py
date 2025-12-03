@@ -1,5 +1,5 @@
 import logging
-import config as C
+import src.config as C
 
 def get_logger(name: str = C.PROJECT_NAME):
   """Provides a logger.

@@ -1,8 +1,8 @@
 import torch
 from torch.utils.data import Dataset
-from utils.file_utils import list_files_paths
-from tokenizer.tokenizer import encode
-import config as C
+from src.utils.file_utils import list_files_paths
+from src.tokenizer.tokenizer import encode
+import src.config as C
 
 class TextDataset(Dataset):
   

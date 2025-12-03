@@ -1,5 +1,5 @@
 import torch
-import config as C
+import src.config as C
 
 def slide_window(batch: torch.Tensor) -> torch.Tensor: 
   """Truncate tokens to keep max sequence size.
