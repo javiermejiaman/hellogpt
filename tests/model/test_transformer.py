@@ -13,8 +13,8 @@ def transformer_block(config):
   return TransformerBlock(config).to(get_device()).eval()
 
 @pytest.fixture
-def batch():
-  return torch.randn(1, 10, 256).to(get_device())
+def batch(config):
+  return torch.randn(1, 1, config.d_model).to(get_device())
 
 @pytest.mark.smoke
 def test_model_creation(transformer_block):

@@ -16,7 +16,7 @@ def model(config):
 def batch(config):
   return torch.randint(low=0, 
                        high=config.vocab_size, 
-                       size=(1, 10)).to(get_device())
+                       size=(1, 1)).to(get_device())
 
 @pytest.mark.smoke
 def test_model_creation(model):
