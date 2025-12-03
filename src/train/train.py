@@ -4,22 +4,27 @@ from src.train.dataset import TextDataset
 import torch.nn.functional as F
 from src.train.utils import fit, get_data, get_model
 
-def train_model(epochs: int=C.EPOCHS):
-  """Trains the model.
-  
-  Args:
-    epochs (int): Number of epochs to train.
-  """
+class Trainer:
 
-  loss_func = F.cross_entropy
+  def __init__(self):
+    self._loss_func = F.cross_entropy
 
-  dataset = TextDataset()
+    self.dataset = TextDataset()
 
-  train_size = int(C.TRAIN_TO_VALID_RATIO * len(dataset))
-  valid_size = len(dataset) - train_size
+    self.train_size = int(C.TRAIN_TO_VALID_RATIO * len(self.dataset))
+    self.valid_size = len(self.dataset) - self.train_size
+    self.total_samples = self.train_size + self.valid_size
 
-  train_ds, valid_ds = random_split(dataset, [train_size, valid_size])
+    self.train_ds, self.valid_ds = random_split(self.dataset, [self.train_size, self.valid_size])
+    self.train_dl, self.valid_dl = get_data(self.train_ds, self.valid_ds)
+    self.num_batches = len(self.train_dl) + len(self.valid_dl)
 
-  train_dl, valid_dl = get_data(train_ds, valid_ds)
-  model, opt = get_model()
-  yield from fit(epochs, model, loss_func, opt, train_dl, valid_dl)
+  def train_model(self, epochs: int=C.EPOCHS):
+    """Trains the model.
+    
+    Args:
+      epochs (int): Number of epochs to train.
+    """
+
+    model, opt = get_model()
+    yield from fit(epochs, model, self._loss_func, opt, self.train_dl, self.valid_dl)

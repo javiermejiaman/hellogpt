@@ -3,7 +3,7 @@ import src.config as C
 from src.inference import generate
 from src.environment import is_tokenizer_model_available, is_model_available
 from src.tokenizer.train import train_tokenizer_model
-from src.train.train import train_model
+from src.train.train import Trainer
 
 if C.SHOW_BANNER:
   print(r"""
@@ -29,12 +29,17 @@ if not is_model_available():
   should_train = input('\nPress enter to continue, X to exit: ')
   
   if should_train.lower() != 'x':
+    trainer = Trainer()
+    
     print(f'\n\n📖 TRAINING')
-    print(f'\nTraining configuration:')
-    print(f'\nTraining configuration:')
+    print(f'\nTraining insights:')
+    print(f'Number of total samples: {trainer.total_samples}')
+    print(f'Number of batches: {trainer.num_batches}')
+    print(f'Number of training samples: {trainer.train_size}')
+    print(f'Number of validation samples: {trainer.valid_size}')
     print(f'\nEpoch\t\tValidation loss\t\tTraining loss')
 
-    for epoch, valid_loss, train_loss in train_model():
+    for epoch, valid_loss, train_loss in trainer.train_model():
       print(f'{epoch}\t\t{valid_loss:.6f}\t\t{train_loss:.6f}')
 
   else:
