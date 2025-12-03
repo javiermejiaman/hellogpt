@@ -9,6 +9,7 @@ def slide_window(batch: torch.Tensor, cfg: Config) -> torch.Tensor:
 
   Args:
     batch (Tensor): shape (B, S) - Batch of token sequences.
+    cfg (Config): Project configuration.
   
   Returns:
     Tensor: shape (B, S) if sequence length S <= max_seq_len,

@@ -11,6 +11,9 @@ def train_tokenizer_model(cfg: Config):
   The source for this tokenizer model is the training data.
   It's recommeded to retrain the tokenizer model when the 
   data is changed.
+
+  Args:
+    cfg (Config): Project configuration.
   """
 
   log = get_logger(cfg)

@@ -30,6 +30,9 @@ def is_tokenizer_model_available():
 
 def is_model_available(cfg: Config):
   """Checks if a model checkpoint is available.
+
+  Args:
+    cfg (Config): Project configuration.
   
   Returns:
     bool: True if a model serial is available, False otherwise.

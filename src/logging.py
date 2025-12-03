@@ -5,7 +5,7 @@ def get_logger(cfg: Config):
   """Provides a logger.
 
   Args:
-    name (str): Logger name.
+    cfg (Config): Project configuration.
   
   Returns:
     Logger: logger instance.
