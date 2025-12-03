@@ -50,7 +50,7 @@ def extract_model_serial(model_serial_name):
   Returns:
     int: Serial number of the model.
   """
-  if(match := re.search(r'*.serial_(*\d).pt', model_serial_name)):
+  if(match := re.search(r'.*serial_(\d*).pt', model_serial_name)):
     return int(match.group(1))
   else:
     return None
@@ -64,11 +64,13 @@ def load_model():
 
   from src.environment import get_device
 
-  model = Model().to(get_device())
+  model = Model()
   
   if serial := get_model_latest_serial():
-    model.load_state_dict(torch.load(get_model_path(serial), 
-                                     map_location=get_device()))
+    checkpoint = torch.load(get_model_path(serial), map_location="cpu")
+    model.load_state_dict(checkpoint['model_state'])
+
+    model.to(get_device())
     model.eval()
 
   return model

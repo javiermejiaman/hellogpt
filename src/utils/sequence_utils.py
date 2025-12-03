@@ -15,4 +15,4 @@ def slide_window(batch: torch.Tensor) -> torch.Tensor:
             else shape (B, MAX_SEQ_LENGTH) for truncated sequences.
   """
 
-  return (batch.size(1) > C.MAX_SEQ_LEN) if batch[:, -C.MAX_SEQ_LEN:] else batch
+  return batch[:, -C.MAX_SEQ_LEN:] if (batch.size(1) > C.MAX_SEQ_LEN)  else batch
