@@ -1,9 +1,10 @@
 from dataclasses import dataclass
+from pydantic import BaseModel
 import logging
 
 @dataclass
-class Config:
-  
+class Config(BaseModel):
+
   # Project
   project_name: str = 'HelloGPT'
   show_banner: bool = True
@@ -13,7 +14,7 @@ class Config:
 
   # Tokenization
   vocab_size: int = 8000
-  MIN_FREQ: int = 2
+  min_freq: int = 2
 
   # Model
   model_name: str = 'hellogpt'
