@@ -32,11 +32,20 @@ if not is_model_available():
     trainer = Trainer()
 
     print(f'\n\n📖 TRAINING')
+
+    print(f'\nHyperParams insights:')
+    print(f'Target number of epochs: {C.EPOCHS}')
+    print(f'Batch size: {C.BATCH_SIZE}')
+    print(f'Learning rate: {C.LEARNING_RATE}')
+    print(f'Dropout: {C.DROPOUT * 100}%')
+    print(f'Gradient clipping threshold: {C.GRAD_CLIP}')
+
     print(f'\nTraining insights:')
     print(f'Number of total samples: {trainer.total_samples}')
     print(f'Number of batches: {trainer.num_batches}')
     print(f'Number of training samples: {trainer.train_size}')
     print(f'Number of validation samples: {trainer.valid_size}')
+
     print(f'\nEpoch\t\tValidation loss\t\tTraining loss')
 
     for epoch, valid_loss, train_loss in trainer.train_model():
