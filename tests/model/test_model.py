@@ -5,12 +5,18 @@ from src.model.model import Model
 from src.environment import get_device
 
 @pytest.fixture
-def model():
-  return Model(Config()).to(get_device()).eval()
+def config():
+  return Config()
 
 @pytest.fixture
-def batch():
-  return torch.ones(3, dtype=torch.int64).unsqueeze(0)
+def model(config):
+  return Model(config).to(get_device()).eval()
+
+@pytest.fixture
+def batch(config):
+  return torch.randint(low=0, 
+                       high=config.vocab_size, 
+                       size=(1, 10)).to(get_device())
 
 @pytest.mark.smoke
 def test_model_creation(model):
