@@ -1,3 +1,4 @@
+import os
 import src.config as C
 from tokenizers import ByteLevelBPETokenizer
 from src.utils.file_utils import list_files_paths
@@ -17,5 +18,7 @@ def train_tokenizer_model():
                   min_frequency=C.MIN_FREQ, 
                   special_tokens=['<pad>', '<unk>', '<bos>', '<eos>']
   )
+  
+  os.makedirs(C.TOKENIZER_MODEL_PATH, exist_ok=True)
 
   tokenizer.save_model(C.TOKENIZER_MODEL_PATH)

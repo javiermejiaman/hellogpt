@@ -83,6 +83,9 @@ def save_model(model, optimizer, epoch, train_loss):
     train_loss (float): Training loss of the last epoch.
   """
 
+  os.makedirs(os.path.join(C.CHECKPOINTS_PATH, C.MODEL_NAME), 
+              exist_ok=True)
+  
   checkpoint = {
     "model_state": model.state_dict(),
     "optimizer_state": optimizer.state_dict(),
