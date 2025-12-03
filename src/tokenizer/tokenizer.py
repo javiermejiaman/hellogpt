@@ -3,7 +3,7 @@ from transformers import GPT2TokenizerFast
 
 _tokenizer = None
 
-def get_tokenizer():
+def _get_tokenizer():
   """Gets singleton instances of the tokenizer.
 
   Returns:
@@ -31,7 +31,7 @@ def encode(batch):
     Tensor: shape (B, S) - Batch of token sequences.
   """
 
-  tokenizer = get_tokenizer()
+  tokenizer = _get_tokenizer()
 
   return tokenizer(batch)
 
@@ -45,6 +45,6 @@ def decode(batch):
     list: List of decoded strings.
   """
 
-  tokenizer = get_tokenizer()
+  tokenizer = _get_tokenizer()
 
   return tokenizer.batch_decode(batch)
