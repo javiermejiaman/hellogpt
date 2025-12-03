@@ -1,6 +1,6 @@
 import torch
-from src.utils.file_utils import get_model_latest_serial, list_files_paths
-import config as C
+from src.utils.file_utils import list_files_paths
+import src.config as C
 
 def get_device():
   """Gets the device.
@@ -33,5 +33,7 @@ def is_model_available():
   Returns:
     bool: True if a model serial is available, False otherwise.
   """
+
+  from src.utils.model_utils import get_model_latest_serial
 
   return True if get_model_latest_serial() else False

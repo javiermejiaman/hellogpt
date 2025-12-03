@@ -46,7 +46,7 @@ class TransformerBlock(nn.Module):
       nn.Linear(C.D_FF, C.D_MODEL)
     )
   
-  def get_causal_mask(seq_len: int):
+  def get_causal_mask(self, seq_len: int):
     """Creates a boolean causal mask.
 
     Used to prevents tokens from attending to future positions.

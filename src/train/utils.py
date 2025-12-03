@@ -3,7 +3,7 @@ import torch
 from torch.utils.data import DataLoader
 import src.config as C
 from torch.nn.utils import clip_grad_norm_
-from utils.file_utils import load_model, save_model
+from src.utils.model_utils import load_model, save_model
 from torch.optim import AdamW
 from src.environment import get_device
 

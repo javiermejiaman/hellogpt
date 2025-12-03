@@ -1,11 +1,24 @@
 import torch
 import src.config as C
 from src.tokenizer.tokenizer import encode, decode
-from src.utils.file_utils import load_model
+from src.utils.model_utils import load_model
 from src.utils.sequence_utils import slide_window
 from src.environment import get_device
 
-model = load_model()
+_inference_model = None
+
+def _get_inference_model():
+  """Provides the model used for inference.
+  
+  Returns:
+    Model: Instance of Model used for inference.
+  """
+  global _inference_model
+  
+  if _inference_model == None:
+    _inference_model = load_model()
+  
+  return _inference_model
 
 def generate(prompt):
   """Autoregressive text generation.
@@ -26,7 +39,8 @@ def generate(prompt):
     batch = slide_window(batch)                            # (1, S)
     
     for _ in range(C.MAX_NEW_TOKENS):
-      logits = model(batch)                                # (1, S, V)
+      inference_model = _get_inference_model()
+      logits = inference_model(batch)                      # (1, S, V)
       next_token_logits = logits[0, -1, :]                 # (V)
       probs = torch.softmax(next_token_logits 
                             / C.TEMPERATURE, dim=-1)       # (V)

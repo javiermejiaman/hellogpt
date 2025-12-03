@@ -13,7 +13,7 @@ class TextDataset(Dataset):
     tokenized_data = self._encode_data(data)
     self.train_data = self._generate_samples(tokenized_data)
   
-  def _load_data():
+  def _load_data(self):
     """Loads data from file system.
     
     Returns:
@@ -27,7 +27,7 @@ class TextDataset(Dataset):
 
     return''.join(data)
   
-  def _encode_data(data):
+  def _encode_data(self, data):
     """Tokenizes the data.
     
     Args:
@@ -38,7 +38,7 @@ class TextDataset(Dataset):
     """
     return encode([data])["input_ids"][0]
   
-  def _generate_samples(token_ids):
+  def _generate_samples(self, token_ids):
     """Generates training samples.
 
     Args:
