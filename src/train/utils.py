@@ -5,6 +5,7 @@ import src.config as C
 from torch.nn.utils import clip_grad_norm_
 from utils.file_utils import load_model, save_model
 from torch.optim import AdamW
+from src.environment import get_device
 
 def get_model():
   """Get latest model and optimizer.
@@ -81,7 +82,7 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
 
     model.train()
     for xb, yb in train_dl:
-      xb, yb = xb.to(C.DEVICE), yb.to(C.DEVICE)
+      xb, yb = xb.to(get_device()), yb.to(get_device())
       losses, batch_size = _loss_batch(model, loss_func, xb, yb, opt)
       total_loss += losses * batch_size
       total_samples += batch_size
@@ -89,7 +90,7 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
     model.eval()
     with torch.no_grad():
       losses, batch_size = zip(
-        *[_loss_batch(model, loss_func, xb.to(C.DEVICE), yb.to(C.DEVICE)) 
+        *[_loss_batch(model, loss_func, xb.to(get_device()), yb.to(get_device())) 
           for xb, yb in valid_dl]
       )
     valid_loss = np.sum(np.multiply(losses, batch_size)) / np.sum(batch_size)

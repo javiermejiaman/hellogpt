@@ -3,6 +3,7 @@ import re
 import torch
 import src.config as C
 from src.model.model import Model
+from src.environment import get_device
 
 def get_model_path(serial):
   """Gets the model path.
@@ -73,11 +74,11 @@ def load_model():
     Model: Model instance.
   """
 
-  model = Model().to(C.DEVICE)
+  model = Model().to(get_device())
   
   if serial := get_model_latest_serial():
     model.load_state_dict(torch.load(get_model_path(serial), 
-                                     map_location=C.DEVICE))
+                                     map_location=get_device()))
     model.eval()
 
   return model

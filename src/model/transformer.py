@@ -1,6 +1,7 @@
 import torch
 import torch.nn as nn
 import src.config as C
+from src.environment import get_device
 
 class TransformerBlock(nn.Module):
   """Transformer block.
@@ -58,7 +59,7 @@ class TransformerBlock(nn.Module):
     """
     ones_matrix = torch.ones(seq_len, 
                                 seq_len, 
-                                device=C.DEVICE, 
+                                device=get_device(), 
                                 dtype=torch.bool
     )                                                      # (S, S)
 

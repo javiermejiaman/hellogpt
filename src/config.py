@@ -1,9 +1,9 @@
 import logging
-import torch
 import os
 
 # Project
 PROJECT_NAME: str = 'HelloGPT'
+SHOW_BANNER: bool = True
 
 # Logging
 LOGGING_LEVEL: any = logging.INFO
@@ -38,6 +38,3 @@ CHECKPOINTS_PATH: str = os.path.abspath(
   os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'checkpoints'))
 TOKENIZER_MODEL_PATH: str = os.path.abspath(
   os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'tokenizer'))
-
-# Hardware
-DEVICE: any = torch.device("cuda" if torch.cuda.is_available() else "cpu")

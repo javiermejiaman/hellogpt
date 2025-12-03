@@ -3,6 +3,7 @@ import src.config as C
 from src.tokenizer.tokenizer import encode, decode
 from src.utils.file_utils import load_model
 from src.utils.sequence_utils import slide_window
+from src.environment import get_device
 
 model = load_model()
 
@@ -19,7 +20,7 @@ def generate(prompt):
   batch = encode([prompt])['input_ids']                    # (1, S)
   batch = torch.tensor(batch, 
                        dtype=torch.long
-  ).to(C.DEVICE)                                           # (1, S)
+  ).to(get_device())                                       # (1, S)
 
   with torch.no_grad():
     batch = slide_window(batch)                            # (1, S)

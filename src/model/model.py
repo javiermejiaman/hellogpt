@@ -2,6 +2,7 @@ import torch
 import torch.nn as nn
 import src.config as C
 from src.model import transformer
+from src.environment import get_device
 
 class Model(nn.Module):
   """HelloGPT model.
@@ -46,7 +47,7 @@ class Model(nn.Module):
       Tensor: shape (B, S, V) - Logits for each token in the batch.
     """
     positions = torch.arange(batch.size()[1], 
-                             device=C.DEVICE
+                             device=get_device()
     ).unsqueeze(0)                                         # (1, S)
 
     batch = (
