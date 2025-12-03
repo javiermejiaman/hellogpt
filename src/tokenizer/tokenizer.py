@@ -1,14 +1,25 @@
 import src.config as C
 from transformers import GPT2TokenizerFast
 
-tokenizer = GPT2TokenizerFast.from_pretrained(C.TOKENIZER_MODEL_PATH,
-                                              bos_token='<bos>',
-                                              eos_token='<eos>',
-                                              pad_token='<pad>',
-                                              unk_token='<unk>')
+_tokenizer = None
 
-PAD_TOKEN='<pad>'
-PAD_ID=tokenizer.convert_tokens_to_ids('<pad>')
+def get_tokenizer():
+  """Gets singleton instances of the tokenizer.
+
+  Returns:
+    PreTrainedTokenizerBase: Instances of trained tokenizer.
+  """
+  
+  global _tokenizer
+
+  if _tokenizer is None:
+    _tokenizer = GPT2TokenizerFast.from_pretrained(C.TOKENIZER_MODEL_PATH,
+                                                  bos_token='<bos>',
+                                                  eos_token='<eos>',
+                                                  pad_token='<pad>',
+                                                  unk_token='<unk>')
+  
+  return _tokenizer
 
 def encode(batch):
   """Encodes a batch of strings.
@@ -19,6 +30,8 @@ def encode(batch):
   Returns:
     Tensor: shape (B, S) - Batch of token sequences.
   """
+
+  tokenizer = get_tokenizer()
 
   return tokenizer(batch)
 
@@ -31,5 +44,7 @@ def decode(batch):
   Results:
     list: List of decoded strings.
   """
+
+  tokenizer = get_tokenizer()
 
   return tokenizer.batch_decode(batch)
