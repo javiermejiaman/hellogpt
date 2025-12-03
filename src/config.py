@@ -1,9 +1,8 @@
-from dataclasses import dataclass
-from pydantic import BaseModel
+from pydantic.dataclasses import dataclass
 import logging
 
 @dataclass
-class Config(BaseModel):
+class Config():
 
   # Project
   project_name: str = 'HelloGPT'

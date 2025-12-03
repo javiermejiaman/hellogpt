@@ -11,7 +11,7 @@ def get_logger(cfg: Config):
     Logger: logger instance.
   """
 
-  logger = logging.getLogger(cfg.name)
+  logger = logging.getLogger(cfg.project_name)
 
   if not logger.handlers:
     logger.setLevel(cfg.logging_level)

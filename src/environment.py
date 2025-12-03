@@ -1,6 +1,7 @@
 import torch
 from src.utils.file_utils import list_files_paths
 from src.enums import ResourcePath as RP
+from src.config import Config
 
 def get_device():
   """Gets the device.
@@ -20,20 +21,22 @@ def is_tokenizer_model_available():
     bool: True if available, False otherwise.
   """
 
-  file_paths = list_files_paths(RP.TOKENIZER_MODEL)
+  file_paths = list_files_paths(RP.TOKENIZER_MODEL.value)
 
   exists_vocab = any("vocab.json" in f for f in file_paths)
   exists_merges = any("merges.txt" in f for f in file_paths)
 
   return exists_vocab and exists_merges
 
-def is_model_available():
+def is_model_available(cfg: Config):
   """Checks if a model checkpoint is available.
   
   Returns:
     bool: True if a model serial is available, False otherwise.
   """
 
-  from src.utils.model_utils import get_model_latest_serial
+  from src.utils.model_utils import ModelUtils
 
-  return True if get_model_latest_serial() else False
+  model_utils = ModelUtils(cfg)
+
+  return False if model_utils.get_model_latest_serial() is None else True

@@ -1,7 +1,7 @@
 import torch
 from src.config import Config
 from src.tokenizer.tokenizer import Tokenizer
-from src.utils.model_utils import load_model
+from src.utils.model_utils import ModelUtils
 from src.utils.sequence_utils import slide_window
 from src.environment import get_device
 
@@ -9,9 +9,12 @@ class Inference:
 
   def __init__(self, cfg: Config):
     self._cfg = cfg
-    self._tokenizer = Tokenizer()
-    self._inference_model = load_model()
+    
+    model_utils = ModelUtils(cfg)
+    self._inference_model = model_utils.load_model()
     self._inference_model.eval()
+
+    self._tokenizer = Tokenizer()
 
   def generate(self, prompt):
     """Autoregressive text generation.

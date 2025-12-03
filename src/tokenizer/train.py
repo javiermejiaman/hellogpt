@@ -18,17 +18,17 @@ def train_tokenizer_model(cfg: Config):
   try:
     tokenizer = ByteLevelBPETokenizer()
 
-    tokenizer.train(files=list_files_paths(RP.DATA), 
+    tokenizer.train(files=list_files_paths(RP.DATA.value), 
                     vocab_size=cfg.vocab_size, 
                     min_frequency=cfg.min_freq, 
                     special_tokens=['<pad>', '<unk>', '<bos>', '<eos>']
     )
     
-    os.makedirs(RP.TOKENIZER_MODEL, exist_ok=True)
+    os.makedirs(RP.TOKENIZER_MODEL.value, exist_ok=True)
 
-    tokenizer.save_model(RP.TOKENIZER_MODEL)
+    tokenizer.save_model(RP.TOKENIZER_MODEL.value)
 
-    log.debug(f'Tokenizer model saved to "' + RP.TOKENIZER_MODEL + '"')
+    log.debug(f'Tokenizer model saved to "' + RP.TOKENIZER_MODEL.value + '"')
   
   except Exception as e:
     log.error(f'Failed to train tokenizer.', exc_info=True)

@@ -23,7 +23,7 @@ class ModelUtils:
       str: Path to the model.
     """
 
-    return os.path.join(RP.MODEL_STATE, 
+    return os.path.join(RP.MODEL_STATE.value, 
                         self.cfg.model_name, 
                         f'serial_{ serial }.pt')
 
@@ -34,7 +34,7 @@ class ModelUtils:
       int: Latest serial of the model.
     """
 
-    model_checkpoints_path = os.path.join(RP.MODEL_STATE, 
+    model_checkpoints_path = os.path.join(RP.MODEL_STATE.value, 
                                           self.cfg.model_name)
     
     model_serials = [self.extract_model_serial(f) 
@@ -69,7 +69,7 @@ class ModelUtils:
 
     from src.environment import get_device
     
-    model = Model()
+    model = Model(self.cfg)
     
     if serial := self.get_model_latest_serial():
       checkpoint = torch.load(self.get_model_path(serial), map_location="cpu")
@@ -91,7 +91,7 @@ class ModelUtils:
     """
 
     try:
-      os.makedirs(os.path.join(RP.MODEL_STATE, self.cfg.model_name), 
+      os.makedirs(os.path.join(RP.MODEL_STATE.value, self.cfg.model_name), 
                   exist_ok=True)
       
       checkpoint = {
