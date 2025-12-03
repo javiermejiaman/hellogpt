@@ -5,8 +5,6 @@ from src.utils.file_utils import list_files_paths
 from src.logging import get_logger
 from src.enums import ResourcePath as RP
 
-log = get_logger()
-
 def train_tokenizer_model(cfg: Config):
   """Trains the tokenizer model.
   
@@ -14,6 +12,8 @@ def train_tokenizer_model(cfg: Config):
   It's recommeded to retrain the tokenizer model when the 
   data is changed.
   """
+
+  log = get_logger(cfg)
 
   try:
     tokenizer = ByteLevelBPETokenizer()
