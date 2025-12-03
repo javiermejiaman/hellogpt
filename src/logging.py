@@ -1,7 +1,7 @@
 import logging
-import src.config as C
+from src.config import Config
 
-def get_logger(name: str = C.PROJECT_NAME):
+def get_logger(cfg: Config):
   """Provides a logger.
 
   Args:
@@ -11,10 +11,10 @@ def get_logger(name: str = C.PROJECT_NAME):
     Logger: logger instance.
   """
 
-  logger = logging.getLogger(name)
+  logger = logging.getLogger(cfg.name)
 
   if not logger.handlers:
-    logger.setLevel(C.LOGGING_LEVEL)
+    logger.setLevel(cfg.logging_level)
 
     console_handler = logging.StreamHandler()
 
