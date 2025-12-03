@@ -26,16 +26,16 @@ class Model(nn.Module):
   
   def __init__(self, cfg: Config):
     super().__init__()
-    self.token_embedding = nn.Embedding(cfg.vocab_size, cfg.d_model)
-    self.pos_embedding = nn.Embedding(cfg.max_seq_len, cfg.d_model)
+    self._token_embedding = nn.Embedding(cfg.vocab_size, cfg.d_model)
+    self._pos_embedding = nn.Embedding(cfg.max_seq_len, cfg.d_model)
 
-    self.layers = nn.ModuleList([transformer.TransformerBlock(cfg) 
+    self._layers = nn.ModuleList([transformer.TransformerBlock(cfg) 
                                  for _ in range(cfg.num_layers)])
 
-    self.ln_head = nn.LayerNorm(cfg.d_model)
-    self.head = nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
+    self._ln_head = nn.LayerNorm(cfg.d_model)
+    self._head = nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
 
-    self.dropout = nn.Dropout(cfg.dropout)
+    self._dropout = nn.Dropout(cfg.dropout)
 
   def forward(self, batch):
     """Forward passes the input batch through the model.
@@ -51,15 +51,15 @@ class Model(nn.Module):
     ).unsqueeze(0)                                         # (1, S)
 
     batch = (
-      self.token_embedding(batch) 
-      + self.pos_embedding(positions)
+      self._token_embedding(batch) 
+      + self._pos_embedding(positions)
     )                                                      # (B, S, D)
 
-    batch = self.dropout(batch)                            # (B, S, D)
+    batch = self._dropout(batch)                            # (B, S, D)
 
-    for layer in self.layers:
+    for layer in self._layers:
       batch = layer(batch)                                 # (B, S, D)
 
-    batch = self.ln_head(batch)                            # (B, S, D)
+    batch = self._ln_head(batch)                            # (B, S, D)
     
-    return self.head(batch)                                # (B, S, V)
+    return self._head(batch)                                # (B, S, V)

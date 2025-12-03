@@ -33,14 +33,14 @@ class TransformerBlock(nn.Module):
   
   def __init__(self, cfg: Config):
     super().__init__()
-    self.attn = nn.MultiheadAttention(cfg.d_model, 
+    self._attn = nn.MultiheadAttention(cfg.d_model, 
                                       cfg.num_heads, 
                                       cfg.dropout, 
                                       batch_first=True)
-    self.ln_attn = nn.LayerNorm(cfg.d_model)
-    self.ln_ffn = nn.LayerNorm(cfg.d_model)
-    self.dropout = nn.Dropout(cfg.dropout)
-    self.ffn = nn.Sequential(
+    self._ln_attn = nn.LayerNorm(cfg.d_model)
+    self._ln_ffn = nn.LayerNorm(cfg.d_model)
+    self._dropout = nn.Dropout(cfg.dropout)
+    self._ffn = nn.Sequential(
       nn.Linear(cfg.d_model, cfg.d_ffn),
       nn.GELU(),
       nn.Linear(cfg.d_ffn, cfg.d_model)
@@ -78,16 +78,16 @@ class TransformerBlock(nn.Module):
     """
     causal_mask = self.get_causal_mask(batch.size()[1])
     
-    batch = self.ln_attn(batch)                            # (B, S, D)
-    attn = self.attn(
+    batch = self._ln_attn(batch)                            # (B, S, D)
+    attn = self._attn(
       batch, batch, batch,
       attn_mask=causal_mask,
       need_weights=False
     )[0]                                                   # (B, S, D)
-    batch = batch + self.dropout(attn)                     # (B, S, D)
+    batch = batch + self._dropout(attn)                     # (B, S, D)
     
-    batch = self.ln_ffn(batch)                             # (B, S, D)
-    ffn = self.ffn(batch)                                  # (B, S, D)
-    batch = batch + self.dropout(ffn)                      # (B, S, D)
+    batch = self._ln_ffn(batch)                             # (B, S, D)
+    ffn = self._ffn(batch)                                  # (B, S, D)
+    batch = batch + self._dropout(ffn)                      # (B, S, D)
 
     return batch                                           # (B, S, D)
