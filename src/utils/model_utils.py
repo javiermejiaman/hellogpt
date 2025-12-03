@@ -13,7 +13,7 @@ class ModelUtils:
     self._cfg = cfg
     self._log = get_logger(cfg)
 
-  def get_model_path(self, serial):
+  def _get_model_path(self, serial):
     """Gets the model path.
 
     Args:
@@ -26,27 +26,8 @@ class ModelUtils:
     return os.path.join(RP.MODEL_STATE.value, 
                         self._cfg.model_name, 
                         f'serial_{ serial }.pt')
-
-  def get_model_latest_serial(self):
-    """Gets the latest serial of the model.
-
-    Returns:
-      int: Latest serial of the model.
-    """
-
-    model_checkpoints_path = os.path.join(RP.MODEL_STATE.value, 
-                                          self._cfg.model_name)
-    
-    model_serials = [self.extract_model_serial(f) 
-                    for f in list_files_paths(model_checkpoints_path)
-    ]
-
-    if (len(model_serials) == 0 or all(None == s for s in model_serials)):
-      return None
-
-    return max(s for s in model_serials if s is not None)
-
-  def extract_model_serial(model_serial_name):
+  
+  def _extract_model_serial(model_serial_name):
     """Extract serial from the model name.
     
     Args:
@@ -60,6 +41,25 @@ class ModelUtils:
     else:
       return None
 
+  def get_model_latest_serial(self):
+    """Gets the latest serial of the model.
+
+    Returns:
+      int: Latest serial of the model.
+    """
+
+    model_checkpoints_path = os.path.join(RP.MODEL_STATE.value, 
+                                          self._cfg.model_name)
+    
+    model_serials = [self._extract_model_serial(f) 
+                    for f in list_files_paths(model_checkpoints_path)
+    ]
+
+    if (len(model_serials) == 0 or all(None == s for s in model_serials)):
+      return None
+
+    return max(s for s in model_serials if s is not None)
+
   def load_model(self):
     """Loads model.
     
@@ -72,7 +72,7 @@ class ModelUtils:
     model = Model(self._cfg)
     
     if serial := self.get_model_latest_serial():
-      checkpoint = torch.load(self.get_model_path(serial), map_location="cpu")
+      checkpoint = torch.load(self._get_model_path(serial), map_location="cpu")
       model.load_state_dict(checkpoint['model_state'])
 
     return model.to(get_device())
@@ -103,7 +103,7 @@ class ModelUtils:
       
       latest_serial = self.get_model_latest_serial()
       next_serial = latest_serial + 1 if latest_serial else 1
-      model_path = self.get_model_path(next_serial)
+      model_path = self._get_model_path(next_serial)
       
       torch.save(checkpoint, model_path)
 
