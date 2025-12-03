@@ -30,6 +30,6 @@ def train_tokenizer_model():
     log.debug(f'Tokenizer model saved to "' + C.TOKENIZER_MODEL_PATH + '"')
   
   except Exception as e:
-    log.error(f'Failed to train tokenizer.')
+    log.error(f'Failed to train tokenizer.', exc_info=True)
 
     raise e

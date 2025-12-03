@@ -4,6 +4,9 @@ import torch
 import src.config as C
 from src.model.model import Model
 from src.utils.file_utils import list_files_paths
+from src.logging import get_logger
+
+log = get_logger()
 
 def get_model_path(serial):
   """Gets the model path.
@@ -83,17 +86,27 @@ def save_model(model, optimizer, epoch, train_loss):
     train_loss (float): Training loss of the last epoch.
   """
 
-  os.makedirs(os.path.join(C.CHECKPOINTS_PATH, C.MODEL_NAME), 
-              exist_ok=True)
+  try:
+    os.makedirs(os.path.join(C.CHECKPOINTS_PATH, C.MODEL_NAME), 
+                exist_ok=True)
+    
+    checkpoint = {
+      "model_state": model.state_dict(),
+      "optimizer_state": optimizer.state_dict(),
+      "epoch": epoch,
+      "loss": train_loss
+    }
+    
+    latest_serial = get_model_latest_serial()
+    next_serial = latest_serial + 1 if latest_serial else 1
+    model_path = get_model_path(next_serial)
+    
+    torch.save(checkpoint, model_path)
+
+    log.debug(f'Model state saved to "' + model_path + '"')
   
-  checkpoint = {
-    "model_state": model.state_dict(),
-    "optimizer_state": optimizer.state_dict(),
-    "epoch": epoch,
-    "loss": train_loss
-  }
-  
-  latest_serial = get_model_latest_serial()
-  next_serial = latest_serial + 1 if latest_serial else 1
-  
-  torch.save(checkpoint, get_model_path(next_serial))
+  except Exception as e:
+    log.error(f'Failed to save model "' + C.MODEL_NAME 
+              + '" serial #' + next_serial + '.', exc_info=True)
+    
+    raise e
