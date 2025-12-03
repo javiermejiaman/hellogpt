@@ -1,7 +1,7 @@
 import torch
-import src.config as C
+from src.config import Config
 
-def slide_window(batch: torch.Tensor) -> torch.Tensor: 
+def slide_window(batch: torch.Tensor, cfg: Config) -> torch.Tensor: 
   """Truncate tokens to keep max sequence size.
 
   The tokens are truncated at the beginning to keep the
@@ -11,8 +11,8 @@ def slide_window(batch: torch.Tensor) -> torch.Tensor:
     batch (Tensor): shape (B, S) - Batch of token sequences.
   
   Returns:
-    Tensor: shape (B, S) if sequence length S <= MAX_SEQ_LENGTH,
-            else shape (B, MAX_SEQ_LENGTH) for truncated sequences.
+    Tensor: shape (B, S) if sequence length S <= max_seq_len,
+            else shape (B, max_seq_len) for truncated sequences.
   """
 
-  return batch[:, -C.MAX_SEQ_LEN:] if (batch.size(1) > C.MAX_SEQ_LEN)  else batch
+  return batch[:, -cfg.max_seq_len:] if (batch.size(1) > cfg.max_seq_len)  else batch
