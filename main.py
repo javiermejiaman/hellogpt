@@ -30,7 +30,7 @@ if not is_model_available():
   
   if should_train.lower() != 'x':
     trainer = Trainer()
-    
+
     print(f'\n\n📖 TRAINING')
     print(f'\nTraining insights:')
     print(f'Number of total samples: {trainer.total_samples}')
@@ -49,10 +49,12 @@ continue_program = True
 
 while(continue_program):
   prompt = input('\n\nEnter prompt, X to exit: ')
-  if prompt.lower() == 'X':
+  print('')
+
+  if prompt.lower() == 'x':
     break
 
   for token in generate(prompt):
     print(token, end='', flush=True)
   
-  print('\n\n-------------------------')
+  print('')
