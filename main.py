@@ -1,11 +1,13 @@
 import sys
-import src.config as C
-from src.inference import generate
+from src.config import Config
+from src.inference import Inference
 from src.environment import is_tokenizer_model_available, is_model_available
 from src.tokenizer.train import train_tokenizer_model
 from src.train.train import Trainer
 
-if C.SHOW_BANNER:
+cfg = Config()
+
+if cfg.show_banner:
   print(r"""
    _    _      _ _        _____ _____ _______ 
   | |  | |    | | |      / ____|  __ \__   __|
@@ -20,25 +22,25 @@ if not is_tokenizer_model_available():
   should_train = input('\nPress enter to continue, X to exit: ')
 
   if should_train.lower() != 'x':
-    train_tokenizer_model()
+    train_tokenizer_model(cfg)
   else:
     sys.exit(1)
 
-if not is_model_available():
-  print('\n\nThe model "' + C.MODEL_NAME + '" is not trained, do you want to train it?')
+if not is_model_available(cfg):
+  print('\n\nThe model "' + cfg.model_name + '" is not trained, do you want to train it?')
   should_train = input('\nPress enter to continue, X to exit: ')
   
   if should_train.lower() != 'x':
-    trainer = Trainer()
+    trainer = Trainer(cfg)
 
     print(f'\n\n📖 TRAINING')
 
     print(f'\nTraining configuration:')
-    print(f'Target number of epochs: {C.EPOCHS}')
-    print(f'Batch size: {C.BATCH_SIZE}')
-    print(f'Learning rate: {C.LEARNING_RATE}')
-    print(f'Dropout: {C.DROPOUT * 100}%')
-    print(f'Gradient clipping threshold: {C.GRAD_CLIP}')
+    print(f'Target number of epochs: {cfg.epochs}')
+    print(f'Batch size: {cfg.batch_size}')
+    print(f'Learning rate: {cfg.learning_rate}')
+    print(f'Dropout: {cfg.dropout * 100}%')
+    print(f'Gradient clipping threshold: {cfg.grad_clip}')
 
     print(f'\nTraining insights:')
     print(f'Number of total samples: {trainer.total_samples}')
@@ -54,8 +56,9 @@ if not is_model_available():
   else:
     sys.exit(1)
 
-continue_program = True
+inference = Inference(cfg)
 
+continue_program = True
 while(continue_program):
   prompt = input('\n\nEnter prompt, X to exit: ')
   print('')
@@ -63,7 +66,7 @@ while(continue_program):
   if prompt.lower() == 'x':
     break
 
-  for token in generate(prompt):
+  for token in inference.generate(prompt):
     print(token, end='', flush=True)
   
   print('')
