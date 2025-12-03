@@ -30,6 +30,7 @@ BATCH_SIZE: int = 32
 EPOCHS: int = 50
 DROPOUT: float = 0.1
 GRAD_CLIP: float = 1.0
+TRAIN_TO_VALID_RATIO: float = 0.9
 
 # Static  
 DATA_PATH: str = os.path.abspath(os.path.join(

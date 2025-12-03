@@ -15,7 +15,7 @@ def train_model(epochs: int=C.EPOCHS):
 
   dataset = TextDataset()
 
-  train_size = int(0.9 * len(dataset))
+  train_size = int(C.TRAIN_TO_VALID_RATIO * len(dataset))
   valid_size = len(dataset) - train_size
 
   train_ds, valid_ds = random_split(dataset, [train_size, valid_size])
