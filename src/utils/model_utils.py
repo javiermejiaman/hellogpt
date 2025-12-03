@@ -63,17 +63,14 @@ def load_model():
   """
 
   from src.environment import get_device
-
-  model = Model()
   
   if serial := get_model_latest_serial():
+    model = Model()
+    
     checkpoint = torch.load(get_model_path(serial), map_location="cpu")
     model.load_state_dict(checkpoint['model_state'])
 
-    model.to(get_device())
-    model.eval()
-
-  return model
+  return model.to(get_device())
 
 def save_model(model, optimizer, epoch, train_loss):
   """Saves model.

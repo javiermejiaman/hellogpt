@@ -30,6 +30,9 @@ def generate(prompt):
     str: Generated chunk of text.
   """
 
+  inference_model = _get_inference_model()
+  inference_model.eval()
+
   batch = encode([prompt])['input_ids']                    # (1, S)
   batch = torch.tensor(batch, 
                        dtype=torch.long
@@ -39,7 +42,6 @@ def generate(prompt):
     batch = slide_window(batch)                            # (1, S)
     
     for _ in range(C.MAX_NEW_TOKENS):
-      inference_model = _get_inference_model()
       logits = inference_model(batch)                      # (1, S, V)
       next_token_logits = logits[0, -1, :]                 # (V)
       probs = torch.softmax(next_token_logits 
