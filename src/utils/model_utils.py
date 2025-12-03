@@ -10,8 +10,8 @@ from src.enums import ResourcePath as RP
 class ModelUtils:
 
   def __init__(self, cfg: Config):
-    self.cfg = cfg
-    self.log = get_logger(cfg)
+    self._cfg = cfg
+    self._log = get_logger(cfg)
 
   def get_model_path(self, serial):
     """Gets the model path.
@@ -24,7 +24,7 @@ class ModelUtils:
     """
 
     return os.path.join(RP.MODEL_STATE.value, 
-                        self.cfg.model_name, 
+                        self._cfg.model_name, 
                         f'serial_{ serial }.pt')
 
   def get_model_latest_serial(self):
@@ -35,7 +35,7 @@ class ModelUtils:
     """
 
     model_checkpoints_path = os.path.join(RP.MODEL_STATE.value, 
-                                          self.cfg.model_name)
+                                          self._cfg.model_name)
     
     model_serials = [self.extract_model_serial(f) 
                     for f in list_files_paths(model_checkpoints_path)
@@ -69,7 +69,7 @@ class ModelUtils:
 
     from src.environment import get_device
     
-    model = Model(self.cfg)
+    model = Model(self._cfg)
     
     if serial := self.get_model_latest_serial():
       checkpoint = torch.load(self.get_model_path(serial), map_location="cpu")
@@ -91,7 +91,7 @@ class ModelUtils:
     """
 
     try:
-      os.makedirs(os.path.join(RP.MODEL_STATE.value, self.cfg.model_name), 
+      os.makedirs(os.path.join(RP.MODEL_STATE.value, self._cfg.model_name), 
                   exist_ok=True)
       
       checkpoint = {
@@ -107,10 +107,10 @@ class ModelUtils:
       
       torch.save(checkpoint, model_path)
 
-      self.log.debug(f'Model state saved to "' + model_path + '"')
+      self._log.debug(f'Model state saved to "' + model_path + '"')
     
     except Exception as e:
-      self.log.error(f'Failed to save model "' + self.cfg.model_name 
+      self._log.error(f'Failed to save model "' + self._cfg.model_name 
                 + '" serial #' + next_serial + '.', exc_info=True)
       
       raise e

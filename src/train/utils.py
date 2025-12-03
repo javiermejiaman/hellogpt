@@ -10,8 +10,8 @@ from src.environment import get_device
 class TrainUtils():
 
   def __init__(self, cfg: Config):
-    self.cfg = cfg
-    self.model_utils = ModelUtils(cfg)
+    self._cfg = cfg
+    self._model_utils = ModelUtils(cfg)
     
   def get_model(self):
     """Get latest model and optimizer.
@@ -21,9 +21,9 @@ class TrainUtils():
       AdamW: Model optimizer.
     """
 
-    model = self.model_utils.load_model()
+    model = self._model_utils.load_model()
     
-    return model, AdamW(model.parameters(), lr=self.cfg.learning_rate)
+    return model, AdamW(model.parameters(), lr=self._cfg.learning_rate)
 
   def get_data(self, train_ds, valid_ds):
     """Gets the training and validation data loaders.
@@ -38,10 +38,10 @@ class TrainUtils():
 
     return (
       DataLoader(train_ds, 
-                batch_size=self.cfg.batch_size, 
+                batch_size=self._cfg.batch_size, 
                 shuffle=True),
       DataLoader(valid_ds, 
-                batch_size=self.cfg.batch_size * 2, 
+                batch_size=self._cfg.batch_size * 2, 
                 shuffle=True)
     )
 
@@ -64,7 +64,7 @@ class TrainUtils():
 
     if opt is not None:
       loss.backward()
-      clip_grad_norm_(model.parameters(), self.cfg.grad_clip)
+      clip_grad_norm_(model.parameters(), self._cfg.grad_clip)
       opt.step()
       opt.zero_grad()
 
@@ -102,6 +102,6 @@ class TrainUtils():
       valid_loss = np.sum(np.multiply(losses, batch_size)) / np.sum(batch_size)
       train_loss = total_loss / total_samples
 
-      self.model_utils.save_model(model, opt, epoch, train_loss)
+      self._model_utils.save_model(model, opt, epoch, train_loss)
 
       yield (epoch, valid_loss, train_loss)

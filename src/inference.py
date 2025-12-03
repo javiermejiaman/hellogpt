@@ -2,7 +2,7 @@ import torch
 from src.config import Config
 from src.tokenizer.tokenizer import Tokenizer
 from src.utils.model_utils import ModelUtils
-from src.utils.sequence_utils import slide_window
+from utils.inference_utils import slide_window
 from src.environment import get_device
 
 class Inference:
@@ -41,7 +41,7 @@ class Inference:
         logits = self._inference_model(batch)                # (1, S, V)
         next_token_logits = logits[0, -1, :]                 # (V)
         probs = torch.softmax(
-          next_token_logits / self._cfg.temperature, dim=-1)  # (V)
+          next_token_logits / self._cfg.temperature, dim=-1) # (V)
         next_token = torch.argmax(probs).view(1, 1)          # (1, 1)
         
         yield self._tokenizer.decode(next_token.tolist())[0]
