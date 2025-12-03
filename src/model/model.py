@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import src.config as C
+from src.config import Config
 from src.model import transformer
 from src.environment import get_device
 
@@ -24,18 +24,18 @@ class Model(nn.Module):
        vocabulaby logits.
   """
   
-  def __init__(self):
+  def __init__(self, cfg: Config):
     super().__init__()
-    self.token_embedding = nn.Embedding(C.VOCAB_SIZE, C.D_MODEL)
-    self.pos_embedding = nn.Embedding(C.MAX_SEQ_LEN, C.D_MODEL)
+    self.token_embedding = nn.Embedding(cfg.vocab_size, cfg.d_model)
+    self.pos_embedding = nn.Embedding(cfg.max_seq_len, cfg.d_model)
 
-    self.layers = nn.ModuleList([transformer.TransformerBlock() 
-                                 for _ in range(C.NUM_LAYERS)])
+    self.layers = nn.ModuleList([transformer.TransformerBlock(cfg) 
+                                 for _ in range(cfg.num_layers)])
 
-    self.ln_head = nn.LayerNorm(C.D_MODEL)
-    self.head = nn.Linear(C.D_MODEL, C.VOCAB_SIZE, bias=False)
+    self.ln_head = nn.LayerNorm(cfg.d_model)
+    self.head = nn.Linear(cfg.d_model, cfg.vocab_size, bias=False)
 
-    self.dropout = nn.Dropout(C.DROPOUT)
+    self.dropout = nn.Dropout(cfg.dropout)
 
   def forward(self, batch):
     """Forward passes the input batch through the model.

@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import src.config as C
+from src.config import Config
 from src.environment import get_device
 
 class TransformerBlock(nn.Module):
@@ -31,19 +31,19 @@ class TransformerBlock(nn.Module):
         and prevent overfitting.
   """
   
-  def __init__(self):
+  def __init__(self, cfg: Config):
     super().__init__()
-    self.attn = nn.MultiheadAttention(C.D_MODEL, 
-                                      C.NUM_HEADS, 
-                                      C.DROPOUT, 
+    self.attn = nn.MultiheadAttention(cfg.d_model, 
+                                      cfg.num_heads, 
+                                      cfg.dropout, 
                                       batch_first=True)
-    self.ln_attn = nn.LayerNorm(C.D_MODEL)
-    self.ln_ffn = nn.LayerNorm(C.D_MODEL)
-    self.dropout = nn.Dropout(C.DROPOUT)
+    self.ln_attn = nn.LayerNorm(cfg.d_model)
+    self.ln_ffn = nn.LayerNorm(cfg.d_model)
+    self.dropout = nn.Dropout(cfg.dropout)
     self.ffn = nn.Sequential(
-      nn.Linear(C.D_MODEL, C.D_FF),
+      nn.Linear(cfg.d_model, cfg.d_ffn),
       nn.GELU(),
-      nn.Linear(C.D_FF, C.D_MODEL)
+      nn.Linear(cfg.d_ffn, cfg.d_model)
     )
   
   def get_causal_mask(self, seq_len: int):
@@ -58,9 +58,9 @@ class TransformerBlock(nn.Module):
       Tensor: shape (S, S) - Upper triangular boolean mask.
     """
     ones_matrix = torch.ones(seq_len, 
-                                seq_len, 
-                                device=get_device(), 
-                                dtype=torch.bool
+                             seq_len, 
+                             device=get_device(), 
+                             dtype=torch.bool
     )                                                      # (S, S)
 
     return torch.triu(ones_matrix, diagonal=1)             # (S, S)

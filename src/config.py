@@ -1,41 +1,36 @@
+from dataclasses import dataclass
 import logging
-import os
 
-# Project
-PROJECT_NAME: str = 'HelloGPT'
-SHOW_BANNER: bool = True
+@dataclass
+class Config:
+  
+  # Project
+  project_name: str = 'HelloGPT'
+  show_banner: bool = True
 
-# Logging
-LOGGING_LEVEL: any = logging.INFO
+  # Logging
+  logging_level: int = logging.INFO
 
-# Tokenization
-VOCAB_SIZE: int = 8000
-MIN_FREQ: int = 2
+  # Tokenization
+  vocab_size: int = 8000
+  MIN_FREQ: int = 2
 
-# Model
-MODEL_NAME: str = 'hellogpt'
-MAX_SEQ_LEN: int = 128
-D_MODEL: int = 256
-D_FF: int = D_MODEL * 4
-NUM_LAYERS: int = 4
-NUM_HEADS: int = 4
+  # Model
+  model_name: str = 'hellogpt'
+  max_seq_len: int = 128
+  d_model: int = 256
+  d_ffn: int = 1024
+  num_layers: int = 4
+  num_heads: int = 4
 
-# Inference
-MAX_NEW_TOKENS: int = 100
-TEMPERATURE: float = 0.8
+  # Inference
+  max_new_tokens: int = 100
+  temperature: float = 0.8
 
-# Training
-LEARNING_RATE: float = 1e-4
-BATCH_SIZE: int = 32
-EPOCHS: int = 50
-DROPOUT: float = 0.1
-GRAD_CLIP: float = 1.0
-TRAIN_TO_VALID_RATIO: float = 0.9
-
-# Static  
-DATA_PATH: str = os.path.abspath(os.path.join(
-  os.path.dirname(__file__), '..', 'data'))
-CHECKPOINTS_PATH: str = os.path.abspath(
-  os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'checkpoints'))
-TOKENIZER_MODEL_PATH: str = os.path.abspath(
-  os.path.join(os.path.dirname(__file__), '..', 'artifacts', 'tokenizer'))
+  # Training
+  learning_rate: float = 1e-4
+  batch_size: int = 32
+  epochs: int = 50
+  dropout: float = 0.1
+  grad_clip: float = 1.0
+  train_to_valid_ratio: float = 0.9
