@@ -76,7 +76,7 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
     valid_dl (DataLoader): Validation data loader.
   """
 
-  for epoch in range(epochs):
+  for epoch in range(1, epochs + 1):
     total_loss = 0
     total_samples = 0
 
@@ -94,7 +94,8 @@ def fit(epochs, model, loss_func, opt, train_dl, valid_dl):
           for xb, yb in valid_dl]
       )
     valid_loss = np.sum(np.multiply(losses, batch_size)) / np.sum(batch_size)
+    train_loss = total_loss / total_samples
 
-    print(epoch, valid_loss)
+    save_model(model, opt, epoch, train_loss)
 
-    save_model(model, opt, epoch, total_loss / total_samples)
+    yield (epoch, valid_loss, train_loss)

@@ -13,12 +13,11 @@ if C.SHOW_BANNER:
   |  __  |/ _ \ | |/ _ \| | |_ |  ___/  | |   
   | |  | |  __/ | | (_) | |__| | |      | |   
   |_|  |_|\___|_|_|\___/ \_____|_|      |_|   
-                                              
   """)
 
 if not is_tokenizer_model_available():
-  print('Tokenizer model not found, do you want to train one? ')
-  should_train = input('Press enter to continue, X to exit: ')
+  print('\n\nTokenizer model not found, do you want to train one? ')
+  should_train = input('\nPress enter to continue, X to exit: ')
 
   if should_train.lower() != 'x':
     train_tokenizer_model()
@@ -26,22 +25,29 @@ if not is_tokenizer_model_available():
     sys.exit(1)
 
 if not is_model_available():
-  print('The model "' + C.MODEL_NAME + '" is not trained, do you want to train it?')
-  should_train = input('Press enter to continue, X to exit: ')
+  print('\n\nThe model "' + C.MODEL_NAME + '" is not trained, do you want to train it?')
+  should_train = input('\nPress enter to continue, X to exit: ')
   
   if should_train.lower() != 'x':
-    train_model()
+    print(f'\n\n📖 TRAINING')
+    print(f'\nTraining configuration:')
+    print(f'\nTraining configuration:')
+    print(f'\nEpoch\t\tValidation loss\t\tTraining loss')
+
+    for epoch, valid_loss, train_loss in train_model():
+      print(f'{epoch}\t\t{valid_loss:.6f}\t\t{train_loss:.6f}')
+
   else:
     sys.exit(1)
 
 continue_program = True
 
 while(continue_program):
-  prompt = input('### Enter a prompt, or exit to quit: ')
-  if prompt == 'exit':
+  prompt = input('\n\nEnter prompt, X to exit: ')
+  if prompt.lower() == 'X':
     break
 
   for token in generate(prompt):
     print(token, end='', flush=True)
   
-  print('\n\n-------------------------\n\n')
+  print('\n\n-------------------------')
