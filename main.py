@@ -33,7 +33,7 @@ if not is_model_available():
 
     print(f'\n\n📖 TRAINING')
 
-    print(f'\nHyperParams insights:')
+    print(f'\nTraining configuration:')
     print(f'Target number of epochs: {C.EPOCHS}')
     print(f'Batch size: {C.BATCH_SIZE}')
     print(f'Learning rate: {C.LEARNING_RATE}')
