@@ -64,9 +64,9 @@ def load_model():
 
   from src.environment import get_device
   
+  model = Model()
+  
   if serial := get_model_latest_serial():
-    model = Model()
-    
     checkpoint = torch.load(get_model_path(serial), map_location="cpu")
     model.load_state_dict(checkpoint['model_state'])
 
