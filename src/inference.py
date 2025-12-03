@@ -2,7 +2,7 @@ import torch
 from src.config import Config
 from src.tokenizer.tokenizer import Tokenizer
 from src.utils.model_utils import ModelUtils
-from utils.inference_utils import slide_window
+from src.utils.inference_utils import slide_window
 from src.environment import get_device
 
 class Inference:
