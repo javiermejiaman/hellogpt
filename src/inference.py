@@ -30,6 +30,9 @@ def generate(prompt):
     str: Generated chunk of text.
   """
 
+  if len(prompt) == 0:
+    return None
+
   inference_model = _get_inference_model()
   inference_model.eval()
 
