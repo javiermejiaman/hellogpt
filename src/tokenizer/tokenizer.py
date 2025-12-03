@@ -1,5 +1,5 @@
-import src.config as C
 from transformers import GPT2TokenizerFast
+from src.enums import ResourcePath as RP
 
 _tokenizer = None
 
@@ -13,7 +13,7 @@ def _get_tokenizer():
   global _tokenizer
 
   if _tokenizer is None:
-    _tokenizer = GPT2TokenizerFast.from_pretrained(C.TOKENIZER_MODEL_PATH,
+    _tokenizer = GPT2TokenizerFast.from_pretrained(RP.TOKENIZER_MODEL,
                                                   bos_token='<bos>',
                                                   eos_token='<eos>',
                                                   pad_token='<pad>',

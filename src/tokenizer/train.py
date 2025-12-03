@@ -1,12 +1,13 @@
 import os
-import src.config as C
+from src.config import Config
 from tokenizers import ByteLevelBPETokenizer
 from src.utils.file_utils import list_files_paths
 from src.logging import get_logger
+from src.enums import ResourcePath as RP
 
 log = get_logger()
 
-def train_tokenizer_model():
+def train_tokenizer_model(cfg: Config):
   """Trains the tokenizer model.
   
   The source for this tokenizer model is the training data.
@@ -17,17 +18,17 @@ def train_tokenizer_model():
   try:
     tokenizer = ByteLevelBPETokenizer()
 
-    tokenizer.train(files=list_files_paths(C.DATA_PATH), 
-                    vocab_size=C.VOCAB_SIZE, 
-                    min_frequency=C.MIN_FREQ, 
+    tokenizer.train(files=list_files_paths(RP.DATA), 
+                    vocab_size=cfg.vocab_size, 
+                    min_frequency=cfg.min_freq, 
                     special_tokens=['<pad>', '<unk>', '<bos>', '<eos>']
     )
     
-    os.makedirs(C.TOKENIZER_MODEL_PATH, exist_ok=True)
+    os.makedirs(RP.TOKENIZER_MODEL, exist_ok=True)
 
-    tokenizer.save_model(C.TOKENIZER_MODEL_PATH)
+    tokenizer.save_model(RP.TOKENIZER_MODEL)
 
-    log.debug(f'Tokenizer model saved to "' + C.TOKENIZER_MODEL_PATH + '"')
+    log.debug(f'Tokenizer model saved to "' + RP.TOKENIZER_MODEL + '"')
   
   except Exception as e:
     log.error(f'Failed to train tokenizer.', exc_info=True)
