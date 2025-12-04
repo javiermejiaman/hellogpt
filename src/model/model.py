@@ -48,18 +48,18 @@ class Model(nn.Module):
     """
     positions = torch.arange(batch.size()[1], 
                              device=get_device()
-    ).unsqueeze(0)                                         # (1, S)
+    ).unsqueeze(0)                                              # (1, S)
 
     batch = (
       self._token_embedding(batch) 
       + self._pos_embedding(positions)
-    )                                                      # (B, S, D)
+    )                                                           # (B, S, D)
 
-    batch = self._dropout(batch)                            # (B, S, D)
+    batch = self._dropout(batch)                                # (B, S, D)
 
     for layer in self._layers:
-      batch = layer(batch)                                 # (B, S, D)
+      batch = layer(batch)                                      # (B, S, D)
 
-    batch = self._ln_head(batch)                            # (B, S, D)
+    batch = self._ln_head(batch)                                # (B, S, D)
     
-    return self._head(batch)                                # (B, S, V)
+    return self._head(batch)                                    # (B, S, V)

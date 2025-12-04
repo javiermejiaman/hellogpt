@@ -61,9 +61,9 @@ class TransformerBlock(nn.Module):
                              seq_len, 
                              device=get_device(), 
                              dtype=torch.bool
-    )                                                      # (S, S)
+    )                                                           # (S, S)
 
-    return torch.triu(ones_matrix, diagonal=1)             # (S, S)
+    return torch.triu(ones_matrix, diagonal=1)                  # (S, S)
   
   def forward(self, batch):
     """Forward passes the input batch through the transformer.
@@ -78,16 +78,16 @@ class TransformerBlock(nn.Module):
     """
     causal_mask = self.get_causal_mask(batch.size()[1])
     
-    batch = self._ln_attn(batch)                            # (B, S, D)
+    batch = self._ln_attn(batch)                                # (B, S, D)
     attn = self._attn(
       batch, batch, batch,
       attn_mask=causal_mask,
       need_weights=False
-    )[0]                                                   # (B, S, D)
-    batch = batch + self._dropout(attn)                     # (B, S, D)
+    )[0]                                                        # (B, S, D)
+    batch = batch + self._dropout(attn)                         # (B, S, D)
     
-    batch = self._ln_ffn(batch)                             # (B, S, D)
-    ffn = self._ffn(batch)                                  # (B, S, D)
-    batch = batch + self._dropout(ffn)                      # (B, S, D)
+    batch = self._ln_ffn(batch)                                 # (B, S, D)
+    ffn = self._ffn(batch)                                      # (B, S, D)
+    batch = batch + self._dropout(ffn)                          # (B, S, D)
 
-    return batch                                           # (B, S, D)
+    return batch                                                # (B, S, D)

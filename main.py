@@ -43,10 +43,10 @@ if not is_model_available(cfg):
     print(f'Gradient clipping threshold: {cfg.grad_clip}')
 
     print(f'\nTraining insights:')
-    print(f'Number of total samples: {trainer.total_samples}')
-    print(f'Number of batches: {trainer.num_batches}')
-    print(f'Number of training samples: {trainer.train_size}')
-    print(f'Number of validation samples: {trainer.valid_size}')
+    print(f'Number of total samples: {trainer.total_samples:,}')
+    print(f'Number of batches: {trainer.num_batches:,}')
+    print(f'Number of training samples: {trainer.train_size:,}')
+    print(f'Number of validation samples: {trainer.valid_size:,}')
 
     print(f'\nEpoch\t\tValidation loss\t\tTraining loss')
 

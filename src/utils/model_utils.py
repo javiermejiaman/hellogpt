@@ -27,7 +27,7 @@ class ModelUtils:
                         self._cfg.model_name, 
                         f'serial_{ serial }.pt')
   
-  def _extract_model_serial(model_serial_name):
+  def _extract_model_serial(self, model_serial_name):
     """Extract serial from the model name.
     
     Args:

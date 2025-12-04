@@ -51,7 +51,7 @@ class TextDataset(Dataset):
     """
 
     data = []
-    for i in range(0, len(token_ids) - 1):
+    for i in range(0, len(token_ids) - self._cfg.max_seq_len + 1):
       data.append(token_ids[i:i + self._cfg.max_seq_len])
 
     return data
