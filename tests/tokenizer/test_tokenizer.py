@@ -5,7 +5,7 @@ from src.tokenizer.tokenizer import Tokenizer
 
 @fixture
 def pretrained_tokenizer():
-  return GPT2TokenizerFast.from_pretrained('gpt2')
+  return GPT2TokenizerFast.from_pretrained('sshleifer/tiny-gpt2')
 
 @fixture
 def tokenizer(pretrained_tokenizer):
