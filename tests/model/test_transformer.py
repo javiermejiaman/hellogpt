@@ -9,12 +9,16 @@ def config():
   return Config()
 
 @pytest.fixture
-def transformer_block(config):
-  return TransformerBlock(config).to(get_device()).eval()
+def device():
+  return get_device()
 
 @pytest.fixture
-def batch(config):
-  return torch.randn(1, 1, config.d_model).to(get_device())
+def transformer_block(device, config):
+  return TransformerBlock(config).to(device).eval()
+
+@pytest.fixture
+def batch(device, config):
+  return torch.randn(1, 1, config.d_model).to(device)
 
 @pytest.mark.smoke
 def test_model_creation(transformer_block):
@@ -25,3 +29,6 @@ def test_forward(transformer_block, batch):
 
 def test_forward_shape(transformer_block, batch, config):
   assert transformer_block.forward(batch).shape == (1, 1, config.d_model)
+
+def test_device(transformer_block, batch, device):
+  assert transformer_block.forward(batch).device == device
