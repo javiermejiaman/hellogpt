@@ -22,3 +22,6 @@ def test_model_creation(transformer_block):
 
 def test_forward(transformer_block, batch):
   assert transformer_block.forward(batch) is not None
+
+def test_forward_shape(transformer_block, batch, config):
+  assert transformer_block.forward(batch).shape == (1, 1, config.d_model)

@@ -24,3 +24,6 @@ def test_model_creation(model):
 
 def test_forward(model, batch):
   assert model.forward(batch) is not None
+
+def test_forward_shape(model, batch, config):
+  assert model.forward(batch).shape == (1, 1, config.vocab_size)
