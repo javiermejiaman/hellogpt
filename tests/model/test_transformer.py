@@ -20,6 +20,5 @@ def batch(config):
 def test_model_creation(transformer_block):
   assert transformer_block is not None
 
-@pytest.mark.smoke
 def test_forward(transformer_block, batch):
   assert transformer_block.forward(batch) is not None

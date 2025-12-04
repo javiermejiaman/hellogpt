@@ -22,6 +22,5 @@ def batch(config):
 def test_model_creation(model):
   assert model is not None
 
-@pytest.mark.smoke
 def test_forward(model, batch):
   assert model.forward(batch) is not None
