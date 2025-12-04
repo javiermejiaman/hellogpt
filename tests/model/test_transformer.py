@@ -14,33 +14,33 @@ def device():
 
 @pytest.fixture
 def transformer_block(request, device, config):
-  variant = getattr(request, "param", device)
+  variant = getattr(request, 'param', device)
   return TransformerBlock(config).to(variant).eval()
 
 @pytest.fixture
 def batch(request, device, config):
-  variant = getattr(request, "param", device)
+  variant = getattr(request, 'param', device)
   return torch.randn(1, 1, config.d_model).to(torch.device(variant))
 
 @pytest.mark.smoke
 def test_model_creation(transformer_block):
   assert transformer_block is not None
 
-@pytest.mark.skipif(torch.cuda.is_available(), reason="GPU available")
+@pytest.mark.skipif(torch.cuda.is_available(), reason='GPU available')
 def test_forward_cpu(transformer_block, batch):
   """Checks forward works on CPU."""
   assert transformer_block.forward(batch) is not None
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="GPU not available")
-@pytest.mark.parametrize("transformer_block, batch", [
-  ("cpu", "cpu"), ("cuda", "cuda")], indirect=True)
+@pytest.mark.skipif(not torch.cuda.is_available(), reason='GPU not available')
+@pytest.mark.parametrize('transformer_block, batch', [
+  ('cpu', 'cpu'), ('cuda', 'cuda')], indirect=True)
 def test_forward_cpu_and_gpu(transformer_block, batch):
   """Checks forward works on both CPU and GPU."""
   assert transformer_block.forward(batch) is not None
 
-@pytest.mark.skipif(not torch.cuda.is_available(), reason="GPU not available")
-@pytest.mark.parametrize("transformer_block, batch", [
-  ("cpu", "cuda"), ("cuda", "cpu")], indirect=True)
+@pytest.mark.skipif(not torch.cuda.is_available(), reason='GPU not available')
+@pytest.mark.parametrize('transformer_block, batch', [
+  ('cpu', 'cuda'), ('cuda', 'cpu')], indirect=True)
 def test_forward_mixed_devices(transformer_block, batch):
   """Checks forward fails when mixing CPU and GPU."""
   with pytest.raises(Exception):

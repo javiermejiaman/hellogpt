@@ -3,13 +3,16 @@ from src.enums import ResourcePath as RP
 
 class Tokenizer:
 
-  def __init__(self):
-    self._tokenizer = GPT2TokenizerFast.from_pretrained(
-      RP.TOKENIZER_MODEL.value,
-      bos_token='<bos>',
-      eos_token='<eos>',
-      pad_token='<pad>',
-      unk_token='<unk>')
+  def __init__(self, tokenizer=None):
+    self._tokenizer = (tokenizer 
+                       if tokenizer is not None 
+                       else GPT2TokenizerFast.from_pretrained(
+                         RP.TOKENIZER_MODEL.value,
+                         bos_token='<bos>',
+                         eos_token='<eos>',
+                         pad_token='<pad>',
+                         unk_token='<unk>')
+    )
 
   def encode(self, batch):
     """Encodes a batch of strings.
