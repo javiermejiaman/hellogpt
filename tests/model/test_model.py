@@ -49,7 +49,7 @@ def test_forward_mixed_devices(model, batch):
     model.forward(batch)
 
 def test_forward_shape(model, batch, config):
-  """Checks output tensor has expected shape."""
+  """Checks output tensor has expected shape (B, S, V)."""
   assert model.forward(batch).shape == (1, 1, config.vocab_size)
 
 def test_device(model, batch, device):

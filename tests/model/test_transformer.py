@@ -47,7 +47,7 @@ def test_forward_mixed_devices(transformer_block, batch):
     transformer_block.forward(batch)
 
 def test_forward_shape(transformer_block, batch, config):
-  """Checks output tensor has expected shape."""
+  """Checks output tensor has expected shape (B, S, D)."""
   assert transformer_block.forward(batch).shape == (1, 1, config.d_model)
 
 def test_device(transformer_block, batch, device):
