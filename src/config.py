@@ -30,7 +30,7 @@ class Config():
   # Training
   learning_rate: float = 1e-4
   batch_size: int = 32
-  epochs: int = 50
+  epochs: int = 5
   dropout: float = 0.1
   grad_clip: float = 1.0
   train_to_valid_ratio: float = 0.9
