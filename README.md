@@ -29,7 +29,15 @@ When the application detects the tokenizer model is not found, it will prompt th
 
 Likewise, the application detects a model is not trained, it will prompt the user to train a new model.
 
-![Training Model](docs/training-model.png)
+![Training Model](docs/training-epoch.png)
+
+Once the model is trained, the chat will be accessible through the console application, this is an example of the word Elizabeth with a training set of Pride and Prejudice, along with other classic novels and tales:
+
+![Training Model](docs/chat-pride-and-prejudice.png)
+
+Here is an example with the word Scarecrow from The Wizard of Oz:
+
+![Training Model](docs/chat-wizard-of-oz.png)
 
 ### Project structure
 - **main.py:** Entry point of the project. Provides a user-friendly way to interact with the model and run training.
