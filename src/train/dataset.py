@@ -52,8 +52,8 @@ class TextDataset(Dataset):
     """
 
     data = []
-    for i in range(0, len(token_ids) - self._cfg.max_seq_len + 1):
-      data.append(token_ids[i:i + self._cfg.max_seq_len])
+    for i in range(0, len(token_ids) - self._cfg.max_seq_len):
+      data.append(token_ids[i:i + self._cfg.max_seq_len + 1])
 
     return data
 
@@ -80,4 +80,6 @@ class TextDataset(Dataset):
 
     seq = torch.tensor(self._train_data[idx][:-1], dtype=torch.long)
     target = torch.tensor(self._train_data[idx][1:], dtype=torch.long)
+    print(seq.size())
+    print(target.size())
     return seq, target
