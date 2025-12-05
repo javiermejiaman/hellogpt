@@ -30,7 +30,9 @@ def encoded_tokens(config):
     }
   }
 
-@pytest.mark.parametrize('seq_size_ds_size', [('half_size', 0), ('max_size', 1), ('overflow', 2)])
+@pytest.mark.parametrize('seq_size_ds_size', [('half_size', 0), 
+                                              ('max_size', 1), 
+                                              ('overflow', 2)])
 @patch('src.train.dataset.Tokenizer')
 @patch('src.train.dataset.list_file_paths')
 def test_initial_data_load(mock_list_file_paths, mock_tokenizer_class,
