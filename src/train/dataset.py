@@ -80,6 +80,5 @@ class TextDataset(Dataset):
 
     seq = torch.tensor(self._train_data[idx][:-1], dtype=torch.long)
     target = torch.tensor(self._train_data[idx][1:], dtype=torch.long)
-    print(seq.size())
-    print(target.size())
+    
     return seq, target
