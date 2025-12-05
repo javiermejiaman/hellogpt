@@ -3,7 +3,6 @@ from unittest.mock import MagicMock, mock_open, patch
 import pytest
 import torch
 from src.config import Config
-from src.environment import get_device
 from src.train.dataset import TextDataset
 
 @pytest.fixture
