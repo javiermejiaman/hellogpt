@@ -21,6 +21,7 @@ If the previous steps completed successfully, run the main application with `pyt
 `Note: the command python could be different in your environment: py, python3.`
 
 ### Using the application
+Coming soon 💫
 
 ### Project structure
 - **main.py:** Entry point of the project. Provides a user-friendly way to interact with the model and run training.
