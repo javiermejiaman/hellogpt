@@ -5,7 +5,6 @@ from src.config import Config
 from src.model.model import Model
 from src.utils.model_utils import ModelUtils
 from torch.optim import AdamW
-from src.enums import ResourcePath as RP
 
 @pytest.fixture
 def config():
