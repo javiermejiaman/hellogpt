@@ -23,13 +23,13 @@ If the previous steps completed successfully, run the main application with `pyt
 ### Using the application
 
 ### Project structure
-- main.py: Entry point of the project. Provides a user-friendly way to interact with the model and run training.
-- data/: This folder stores the training data, the README.md inside contains more details.
-- artifacts/: This folder stores the artifacts produced by the project.
+- **main.py:** Entry point of the project. Provides a user-friendly way to interact with the model and run training.
+- **data/:** This folder stores the training data, the README.md inside contains more details.
+- **artifacts/:** This folder stores the artifacts produced by the project.
   - `checkpoints/` will store the model's state.  
   - `tokenizer/` will store the trained tokenizer.
-- src/: This folder stores the source code of the project.
-- tests/: This folder stores the tests files. To execute the tests, run `pytest`, `pytest smoke` for smoke test or `pytest integration` for integration tests.
+- **src/:** This folder stores the source code of the project.
+- **tests/:** This folder stores the tests files. To execute the tests, run `pytest`, `pytest smoke` for smoke test or `pytest integration` for integration tests.
 
 ## Hardware requirements
 Training AI/ML models today is very computationally intensive, even for small models like the one in this project. For this reason, it is recommended to use at least one GPU during training. Tests were carried out on an NVIDIA RTX 3060.
@@ -71,3 +71,19 @@ Training AI/ML models today is very computationally intensive, even for small mo
 - RD) Prevents gradient vanishing by letting it flow through the skip path. Drop out is also applied to disable activations and prevent overfitting.
 
 ## Training
+The easiest way to train a model is through the console application `main.py`, but there are a few important points to keep in mind.
+
+### Checkpoints directory structure
+Let's review the checkpoints structure in more detail:
+
+- **artifacts/:** This folder stores the artifacts produced by the project.
+  - `checkpoints/` Stores store the model's state.
+    - `model_name`: Named according to the value provided in the configuration.
+      - `serial_1.pt`: The trainer ensures that no existing serial is overwritten.
+
+### Training a new model
+As seen in the checkpoints directory structure, the model is tied to the `model_name` defined in `src/config.py`. This serves as the main versioning mechanism when working with different datasets or testing a different model configuration.
+
+It is recommended to retrain the tokenizer when training on a different dataset.  
+
+To do this, simply delete the folder `artifacts/tokenizer`. The console application will then prompt you to retrain the tokenizer.
