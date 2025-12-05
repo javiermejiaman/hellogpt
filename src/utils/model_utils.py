@@ -58,7 +58,7 @@ class ModelUtils:
     if (len(model_serials) == 0 or all(None == s for s in model_serials)):
       return None
 
-    return max(s for s in model_serials if s is not None)
+    return max([s for s in model_serials if s is not None])
 
   def load_model(self):
     """Loads model.
