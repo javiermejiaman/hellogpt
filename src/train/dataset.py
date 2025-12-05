@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import Dataset
-from src.utils.file_utils import list_files_paths
+from src.utils.file_utils import list_file_paths
 from src.tokenizer.tokenizer import Tokenizer
 from src.config import Config
 from src.enums import ResourcePath as RP
@@ -23,7 +23,7 @@ class TextDataset(Dataset):
     """
     data = []
 
-    for file_path in list_files_paths(RP.DATA.value):
+    for file_path in list_file_paths(RP.DATA.value):
       with open(file_path, 'r', encoding='utf-8') as f:
         data.append(f.read())
 

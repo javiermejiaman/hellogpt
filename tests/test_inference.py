@@ -46,8 +46,8 @@ def decoded_tokens():
 
 @pytest.fixture
 def inference(config):
-    with (patch("src.inference.Tokenizer") as mock_tokenizer_class, 
-          patch("src.inference.ModelUtils") as mock_model_utils_class):
+    with (patch('src.inference.Tokenizer') as mock_tokenizer_class, 
+          patch('src.inference.ModelUtils') as mock_model_utils_class):
       mock_tokenizer = MagicMock()
       mock_tokenizer_class.return_value = mock_tokenizer
 

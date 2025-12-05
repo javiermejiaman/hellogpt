@@ -9,14 +9,14 @@ def config():
 
 @pytest.fixture
 def mock_bpe_tokenizer():
-  with patch("src.tokenizer.train.ByteLevelBPETokenizer") as mock_class:
+  with patch('src.tokenizer.train.ByteLevelBPETokenizer') as mock_class:
     mock = MagicMock()
     mock_class.return_value = mock
     yield mock
 
 @pytest.fixture
 def mock_makedirs():
-  with patch("src.tokenizer.train.os.makedirs") as mock_func:
+  with patch('src.tokenizer.train.os.makedirs') as mock_func:
     mock = MagicMock()
     mock_func.return_value = mock
     yield mock_func

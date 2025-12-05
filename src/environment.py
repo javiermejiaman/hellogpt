@@ -1,5 +1,5 @@
 import torch
-from src.utils.file_utils import list_files_paths
+from src.utils.file_utils import list_file_paths
 from src.enums import ResourcePath as RP
 from src.config import Config
 
@@ -21,7 +21,7 @@ def is_tokenizer_model_available():
     bool: True if available, False otherwise.
   """
 
-  file_paths = list_files_paths(RP.TOKENIZER_MODEL.value)
+  file_paths = list_file_paths(RP.TOKENIZER_MODEL.value)
 
   exists_vocab = any("vocab.json" in f for f in file_paths)
   exists_merges = any("merges.txt" in f for f in file_paths)

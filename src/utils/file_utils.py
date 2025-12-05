@@ -1,6 +1,6 @@
 import os
 
-def list_files_paths(dir):
+def list_file_paths(dir):
   """List file paths.
 
   Args:

@@ -1,7 +1,7 @@
 import os
 from src.config import Config
 from tokenizers import ByteLevelBPETokenizer
-from src.utils.file_utils import list_files_paths
+from src.utils.file_utils import list_file_paths
 from src.logging import get_logger
 from src.enums import ResourcePath as RP
 
@@ -21,7 +21,7 @@ def train_tokenizer_model(cfg: Config):
   try:
     tokenizer = ByteLevelBPETokenizer()
 
-    tokenizer.train(files=list_files_paths(RP.DATA.value), 
+    tokenizer.train(files=list_file_paths(RP.DATA.value), 
                     vocab_size=cfg.vocab_size, 
                     min_frequency=cfg.min_freq, 
                     special_tokens=['<pad>', '<unk>', '<bos>', '<eos>']

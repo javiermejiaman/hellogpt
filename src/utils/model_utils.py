@@ -3,7 +3,7 @@ import re
 import torch
 from src.config import Config
 from src.model.model import Model
-from src.utils.file_utils import list_files_paths
+from src.utils.file_utils import list_file_paths
 from src.logging import get_logger
 from src.enums import ResourcePath as RP
 
@@ -52,7 +52,7 @@ class ModelUtils:
                                           self._cfg.model_name)
     
     model_serials = [self._extract_model_serial(f) 
-                    for f in list_files_paths(model_checkpoints_path)
+                    for f in list_file_paths(model_checkpoints_path)
     ]
 
     if (len(model_serials) == 0 or all(None == s for s in model_serials)):
