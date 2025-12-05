@@ -46,18 +46,18 @@ def decoded_tokens():
 
 @pytest.fixture
 def inference(config):
-    with (patch('src.inference.Tokenizer') as mock_tokenizer_class, 
-          patch('src.inference.ModelUtils') as mock_model_utils_class):
-      mock_tokenizer = MagicMock()
-      mock_tokenizer_class.return_value = mock_tokenizer
+  with (patch('src.inference.Tokenizer') as mock_tokenizer_class, 
+        patch('src.inference.ModelUtils') as mock_model_utils_class):
+    mock_tokenizer = MagicMock()
+    mock_tokenizer_class.return_value = mock_tokenizer
 
-      mock_inference_model = MagicMock()
-      
-      mock_model_utils = MagicMock()
-      mock_model_utils.load_model.return_value = mock_inference_model
-      mock_model_utils_class.return_value = mock_model_utils
+    mock_inference_model = MagicMock()
+    
+    mock_model_utils = MagicMock()
+    mock_model_utils.load_model.return_value = mock_inference_model
+    mock_model_utils_class.return_value = mock_model_utils
 
-      yield Inference(config), mock_inference_model, mock_tokenizer
+    yield Inference(config), mock_inference_model, mock_tokenizer
 
 def test_empty_string(inference):
   """Checks generator returns early if prompt is empty."""

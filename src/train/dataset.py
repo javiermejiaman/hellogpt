@@ -27,7 +27,7 @@ class TextDataset(Dataset):
       with open(file_path, 'r', encoding='utf-8') as f:
         data.append(f.read())
 
-    return''.join(data)
+    return ''.join(data)
   
   def _encode_data(self, data):
     """Tokenizes the data.
@@ -38,6 +38,7 @@ class TextDataset(Dataset):
     Returns:
       list: Tokenized training data.
     """
+
     return self._tokenizer.encode([data])["input_ids"][0]
   
   def _generate_samples(self, token_ids):
