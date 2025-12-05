@@ -13,7 +13,7 @@ Dependencies are documented in the file `requirements.txt`. All required depende
 
 `pip install -r requirements.txt`
 
-`Note: PyTorch is not included in the requirements.txt file but is required. You can install it following the instructions on the official PyTorch website, which provides a tool to generate the correct installation command for your system.`
+**Note:** PyTorch is not included in the requirements.txt file but is required. You can install it following the instructions on the official PyTorch website, which provides a tool to generate the correct installation command for your system.
 
 ### Running the project
 If the previous steps completed successfully, run the main application with `python main.py`.
