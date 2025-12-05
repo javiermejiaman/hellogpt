@@ -21,7 +21,15 @@ If the previous steps completed successfully, run the main application with `pyt
 `Note: the command python could be different in your environment: py, python3.`
 
 ### Using the application
-Coming soon 💫
+This project provides a console application to interact with the different aspects of the model, including training the tokenizer, training the model and prompting the model.
+
+When the application detects the tokenizer model is not found, it will prompt the user to create one:
+
+![Training Tokenizer](docs/training-tokenizer.png)
+
+Likewise, the application detects a model is not trained, it will prompt the user to train a new model.
+
+![Training Model](docs/training-model.png)
 
 ### Project structure
 - **main.py:** Entry point of the project. Provides a user-friendly way to interact with the model and run training.
