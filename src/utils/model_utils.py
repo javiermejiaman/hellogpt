@@ -102,7 +102,7 @@ class ModelUtils:
       }
       
       latest_serial = self.get_model_latest_serial()
-      next_serial = latest_serial + 1 if latest_serial else 1
+      next_serial = latest_serial + 1 if latest_serial is not None else 1
       model_path = self._get_model_path(next_serial)
       
       torch.save(checkpoint, model_path)
