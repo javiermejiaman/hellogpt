@@ -67,7 +67,7 @@ It is recommended to retrain the tokenizer when training on a different dataset.
 To do this, simply delete the folder `artifacts/tokenizer`. The console application will then prompt you to retrain the tokenizer.
 
 ## Hardware requirements
-Training AI/ML models today is very computationally intensive, even for small models like the one in this project. For this reason, it is recommended to use at least one GPU during training. Tests were carried out on an NVIDIA RTX 3060.
+Training AI/ML models today is very computationally intensive, even for small models like the one in this project. For this reason, it is recommended to use at least one GPU during training. Tests were carried out on an NVIDIA RTX 3060, processing a full set (2.4 million tokens from 5MB of data) in one and a half hours.
 
 **Important:** Currently, only NVIDIA GPUs are supported by PyTorch, the ML/AI framework used in this project. PyTorch requires the CUDA toolkit to be installed on your system, which can be downloaded [here](https://developer.nvidia.com/cuda-toolkit).
 
